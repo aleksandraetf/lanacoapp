@@ -2,36 +2,98 @@ package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lanaco.mentor.dao.AirCompanyDAO;
 import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.service.AirCompanyService;
 
 @Service
 public class AirCompanyServiceImpl implements AirCompanyService {
+	
+	@Autowired
+	AirCompanyDAO airCompanyDAO;
 
 	@Override
 	public ArrayList<Aircompany> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList<Aircompany>)airCompanyDAO.findAll();
 	}
 
 	@Override
 	public Aircompany getOne(String name) {
-		// TODO Auto-generated method stub
-		return null;
+		return airCompanyDAO.findOneByName(name);
 	}
 
 	@Override
 	public String save(Aircompany recObj) {
-		// TODO Auto-generated method stub
-		return null;
+		if (recObj.getName() == null || recObj.getName().equals("")) {
+			return "Fail, data missing";
+		}
+		Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
+		if (aircompany != null) {
+			return "Fail, air company with provided name already exists but name must be unique!";
+		}
+
+		aircompany = new Aircompany(recObj.getName(), true);
+
+		try {
+			airCompanyDAO.save(aircompany);
+		} catch (IllegalArgumentException ex1) {
+			//log.error("[User Controller exception in POST: ]", ex1);
+			return "Exception in User Controller POST (ex1), contact admins!";
+		} catch (Exception ex2) {
+			//log.error("[User Controller exception in POST: ]", ex2);
+			return "Exception in User Controller POST (ex2), contact admins!";
+		}
+		return "OK, Air company saved";
 	}
 
 	@Override
 	public String edit(Aircompany recObj) {
-		// TODO Auto-generated method stub
-		return null;
+		if (recObj.getName() == null || recObj.getName().equals("")) {
+			return "Fail, data missing!";
+		}
+		Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
+		if (aircompany == null) {
+			return "Fail, air company with provided name not found!";
+		}
+		aircompany.setName(recObj.getName());
+
+		try {
+			airCompanyDAO.save(aircompany);
+		} catch (IllegalArgumentException ex1) {
+			//log.error("[User Controller exception in PUT: ]", ex1);
+			return "Exception in AirCompany Controller PUT (ex1), contact admins!";
+		} catch (Exception ex2) {
+			//log.error("[User Controller exception in PUT: ]", ex2);
+			return "Exception in AirCompany Controller PUT (ex2), contact admins!";
+		}
+		return "OK, Air company edited!";
+	}
+	
+	@Override
+	public String flagNotActive(String name) {
+		Aircompany aircompany = airCompanyDAO.findOneByName(name);
+		if (name == null || name.equals("")) {
+			return "Fail, data missing!";
+		}
+		if (aircompany == null) {
+			return "Fail, AirCompany with provided name not found!";
+		}
+		aircompany.setActive(false);
+
+		try {
+			airCompanyDAO.save(aircompany);
+		} catch (IllegalArgumentException ex1) {
+			//log.error("[User Controller exception in DELETE: ]", ex1);
+			return "Exception in AirCompany Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+		//	log.error("[User Controller exception in DELETE: ]", ex2);
+			return "Exception in AirCompany Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, AirCompany deleted!";
 	}
 
 }

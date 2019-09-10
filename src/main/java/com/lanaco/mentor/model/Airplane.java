@@ -20,6 +20,11 @@ public class Airplane {
 	@Column(nullable = false)
 	private Integer seats;
 
+	public Airplane(String brand, Integer seats) {
+		this.brand = brand;
+		this.seats = seats;
+	}
+
 	public Long getId() {
 		return id;
 	}

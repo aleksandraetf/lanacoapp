@@ -10,13 +10,17 @@ import javax.persistence.Id;
 @Entity
 public class Destination {
 	
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(nullable = false, unique=true)
 	private String name;
+	
+	public Destination(String name) {
+		super();
+		this.name = name;
+	}
 
 	public Long getId() {
 		return id;

@@ -4,4 +4,6 @@ import com.lanaco.mentor.model.Aircompany;
 
 public interface AirCompanyService extends GenericServiceInterface<Aircompany>{
 
+	public String flagNotActive(String name);
+	
 }

@@ -33,6 +33,12 @@ public class Administrator {
 	
 	
 	
+	public Administrator(String username, String password, boolean b) {
+		this.username = username;
+		this.password = password;
+		this.isActive = b;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -11,7 +11,7 @@ import com.lanaco.mentor.model.Aircompany;
 public interface AirCompanyDAO extends CrudRepository<Aircompany, Long> {
 
 	public Aircompany findOneByName(String name);
-
-	public ArrayList<Aircompany> findAllByIsActive(boolean idActive); 
+	
+	public ArrayList<Aircompany> findAll();
 
 }
