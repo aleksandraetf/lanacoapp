@@ -9,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.mentor.serverList.model.User;
-
 
 @Entity
 public class Ticket {
