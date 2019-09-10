@@ -24,6 +24,12 @@ public class Aircompany {
 	
 	
 	
+	public Aircompany(String name, boolean isActive) {
+		super();
+		this.name = name;
+		this.isActive = isActive;
+	}
+
 	public Long getId() {
 		return id;
 	}

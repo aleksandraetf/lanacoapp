@@ -16,5 +16,7 @@ public interface AdministratorDAO extends CrudRepository<Administrator,Long>{
 
 	public ArrayList<Administrator> findAllByAirCompany(Aircompany airCompany);
 	
+	public ArrayList<Administrator> findAll();
+	
 	
 }

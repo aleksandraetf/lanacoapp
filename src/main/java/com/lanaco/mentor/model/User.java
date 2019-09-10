@@ -26,6 +26,13 @@ public class User {
 	@Column(nullable = false)
 	private Boolean isActive;
 
+	public User(String username, String password, String email, boolean b) {
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.isActive = b;
+	}
+
 	public Boolean getIsActive() {
 		return isActive;
 	}
