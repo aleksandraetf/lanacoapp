@@ -28,8 +28,8 @@ public class Administrator {
 	private Boolean isActive;
 	
 	@ManyToOne
-	@JoinColumn(name="user", referencedColumnName="id", nullable=false)
-	private AirCompany airCompany;
+	@JoinColumn(name="aircompany", referencedColumnName="id", nullable=false)
+	private Aircompany airCompany;
 	
 	
 	
@@ -65,11 +65,11 @@ public class Administrator {
 		this.isActive = isActive;
 	}
 
-	public AirCompany getAirCompany() {
+	public Aircompany getAirCompany() {
 		return airCompany;
 	}
 
-	public void setAirCompany(AirCompany airCompany) {
+	public void setAirCompany(Aircompany airCompany) {
 		this.airCompany = airCompany;
 	}
 }

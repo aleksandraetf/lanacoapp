@@ -3,11 +3,13 @@ package com.lanaco.mentor.service.impl;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.DestinationDAO;
 import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.service.DestinationService;
 
+@Service
 public class DestinationServiceImpl implements DestinationService{
 
 	

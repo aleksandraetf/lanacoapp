@@ -32,7 +32,7 @@ public class Flight {
 	
 	@ManyToOne
 	@JoinColumn(name="airCompany", referencedColumnName="id", nullable=false)
-	private AirCompany airCompany;
+	private Aircompany airCompany;
 	
 	@ManyToOne
 	@JoinColumn(name="destination", referencedColumnName="id", nullable=false)
@@ -82,11 +82,11 @@ public class Flight {
 		this.isActive = isActive;
 	}
 
-	public AirCompany getAirCompany() {
+	public Aircompany getAirCompany() {
 		return airCompany;
 	}
 
-	public void setAirCompany(AirCompany airCompany) {
+	public void setAirCompany(Aircompany airCompany) {
 		this.airCompany = airCompany;
 	}
 

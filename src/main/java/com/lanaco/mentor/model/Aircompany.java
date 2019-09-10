@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 
 @Entity
-public class AirCompany {
+public class Aircompany {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
