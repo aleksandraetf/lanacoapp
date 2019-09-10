@@ -2,9 +2,12 @@ package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Service;
+
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.service.AdministratorService;
 
+@Service
 public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override

@@ -2,9 +2,12 @@ package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Service;
+
 import com.lanaco.mentor.model.Ticket;
 import com.lanaco.mentor.service.TicketService;
 
+@Service
 public class TicketServiceImpl implements TicketService {
 
 	@Override

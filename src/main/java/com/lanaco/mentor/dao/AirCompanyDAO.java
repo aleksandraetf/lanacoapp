@@ -3,14 +3,15 @@ package com.lanaco.mentor.dao;
 import java.util.ArrayList;
 
 import org.springframework.data.repository.CrudRepository;
-import com.lanaco.mentor.model.AirCompany;
+
+import com.lanaco.mentor.model.Aircompany;
 
 
 
-public interface AirCompanyDAO extends CrudRepository<AirCompany, Long> {
+public interface AirCompanyDAO extends CrudRepository<Aircompany, Long> {
 
-	public AirCompany findOneByName(String name);
+	public Aircompany findOneByName(String name);
 
-	public ArrayList<AirCompany> findAllByIsActive(boolean idActive); 
+	public ArrayList<Aircompany> findAllByIsActive(boolean idActive); 
 
 }

@@ -2,9 +2,12 @@ package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
 
+import org.springframework.stereotype.Service;
+
 import com.lanaco.mentor.model.Supervisor;
 import com.lanaco.mentor.service.SupervisorService;
 
+@Service
 public class SupervisorServiceImpl implements SupervisorService {
 
 	@Override
