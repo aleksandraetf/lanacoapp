@@ -6,4 +6,6 @@ public interface UserService extends GenericServiceInterface<User>{
 
 	public User findOneByUsernameAndPassword(String username, String password);
 
+	String flagNotActive(String username);
+
 }

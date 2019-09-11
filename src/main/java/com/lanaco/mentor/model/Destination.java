@@ -17,6 +17,10 @@ public class Destination {
 	@Column(nullable = false, unique=true)
 	private String name;
 	
+	public Destination() {
+		
+	}
+	
 	public Destination(String name) {
 		super();
 		this.name = name;

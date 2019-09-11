@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.UserDAO;
 import com.lanaco.mentor.model.Administrator;
+import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.UserService;
 
@@ -41,7 +42,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user = new User(recObj.getUsername(), recObj.getPassword(),recObj.getEmail(), true);
-
+		//userDAO baca exception
 		try {
 			userDAO.save(user);
 		} catch (IllegalArgumentException ex1) {
@@ -64,6 +65,7 @@ public class UserServiceImpl implements UserService {
 		if (user == null) {
 			return "Fail, user with provided name not found!";
 		}
+		
 		user.setPassword(recObj.getPassword());
 
 		try {
@@ -76,6 +78,29 @@ public class UserServiceImpl implements UserService {
 			return "Exception in User Controller PUT (ex2), contact admins!";
 		}
 		return "OK, User edited!";
+	}
+	
+	@Override
+	public String flagNotActive(String username) {
+		User user = userDAO.findOneByUsername(username);
+		if (username == null || username.equals("")) {
+			return "Fail, data missing!";
+		}
+		if (user == null) {
+			return "Fail, user with provided name not found!";
+		}
+		
+		user.setIsActive(false);
+		
+		try {
+			userDAO.save(user);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, Destination deleted!";
 	}
 
 	@Override

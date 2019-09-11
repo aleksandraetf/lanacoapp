@@ -10,5 +10,6 @@ public interface AdministratorService extends GenericServiceInterface<Administra
 
 	public ArrayList<Administrator> findAllByAirCompany(Aircompany airCompany);
 	public Administrator findOneByUsernameAndPassword(String username, String password);
+	public String flagNotActive(String username);
 
 }

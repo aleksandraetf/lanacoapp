@@ -12,5 +12,7 @@ public interface AirplaneService extends GenericServiceInterface<Airplane>{
 	public ArrayList<Airplane> findAllByBrand(String brand);
 	
 	public Airplane findOneByBrandAndSeats(String brand,int seats);
+
+	public String flagNotActive(String brand);
 }
 

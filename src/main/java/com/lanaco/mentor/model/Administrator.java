@@ -31,7 +31,9 @@ public class Administrator {
 	@JoinColumn(name="aircompany", referencedColumnName="id", nullable=false)
 	private Aircompany airCompany;
 	
-	
+	public Administrator() {
+		
+	}
 	
 	public Administrator(String username, String password, boolean b) {
 		this.username = username;

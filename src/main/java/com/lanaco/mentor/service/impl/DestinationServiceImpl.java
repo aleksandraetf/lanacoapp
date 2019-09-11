@@ -33,7 +33,7 @@ public class DestinationServiceImpl implements DestinationService{
 		}
 		Destination destination = destinationDAO.findOneByName(recObj.getName());
 		if (destination != null) {
-			return "Fail, user with provided name already exists but name must be unique!";
+			return "Fail, destination with provided name already exists but name must be unique!";
 		}
 
 		destination = new Destination(recObj.getName());
@@ -42,10 +42,10 @@ public class DestinationServiceImpl implements DestinationService{
 			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
-			return "Exception in User Controller POST (ex1), contact admins!";
+			return "Exception in Destination Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
 		//	log.error("[User Controller exception in POST: ]", ex2);
-			return "Exception in User Controller POST (ex2), contact admins!";
+			return "Exception in Destination Controller POST (ex2), contact admins!";
 		}
 		return "OK, Destination saved";
 	}
@@ -71,6 +71,27 @@ public class DestinationServiceImpl implements DestinationService{
 			return "Exception in Destination Controller PUT (ex2), contact admins!";
 		}
 		return "OK, Destination edited!";
+	}
+	@Override
+	public String flagNotActive(String name) {
+		Destination destination = destinationDAO.findOneByName(name);
+		if (name == null || name.equals("")) {
+			return "Fail, data missing!";
+		}
+		if (destination == null) {
+			return "Fail, destination with provided name not found!";
+		}
+
+		//replace with code mark as inactive
+		try {
+			destinationDAO.delete(destination);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, Destination deleted!";
 	}
 
 }
