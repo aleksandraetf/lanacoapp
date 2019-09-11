@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lanaco.mentor.model.Administrator;
-import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.service.AdministratorService;
-import com.lanaco.mentor.service.DestinationService;
-import com.lanaco.mentor.testutil.SteekillerTestUtil;
 
 @RestController
 @RequestMapping(path = "/administrator")
@@ -37,8 +34,8 @@ public class AdministratorController {
 	
 	
 	@PostMapping(path="/add",produces="application/json")
-	public ResponseEntity<String> save(@RequestBody  Administrator recObjDestination, HttpServletRequest request){
-		String response=administratorService.save(recObjDestination);
+	public ResponseEntity<String> save(@RequestBody  Administrator recObjAdmin, HttpServletRequest request){
+		String response=administratorService.save(recObjAdmin);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -49,8 +46,8 @@ public class AdministratorController {
 	}
 	
 	@PutMapping(path="/edit",produces="application/json")
-	public ResponseEntity<String> edit(@RequestBody  Administrator recObjDestination, HttpServletRequest request){
-		String response=administratorService.edit(recObjDestination);
+	public ResponseEntity<String> edit(@RequestBody  Administrator recObjAdmin, HttpServletRequest request){
+		String response=administratorService.edit(recObjAdmin);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
