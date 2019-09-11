@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.AirplaneDAO;
 import com.lanaco.mentor.model.Airplane;
+import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.service.AirplaneService;
 
 @Service
@@ -87,6 +88,29 @@ public class AirplaneServiceImpl implements AirplaneService{
 		return "OK, plane edited!";
 	}
 
+	@Override
+	public String flagNotActive(String brand) {
+		//zamijeniti sa getOneByBrand , za sada hardkodovano za testiranje
+		//i dodati u bazu isActive jer navodno treba da moze da se brise
+		ArrayList<Airplane> all = airplaneDAO.findAllByBrand(brand);
+		if (brand == null || brand.equals("")) {
+			return "Fail, data missing!";
+		}
+		if (all == null) {
+			return "Fail, airplane with provided brand not found!";
+		}
+
+		//replace with code mark as inactive
+		try {
+			airplaneDAO.delete(all.get(0));
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, Destination deleted!";
+	}
 	
 	//potrebno za save i edit
 	@Override

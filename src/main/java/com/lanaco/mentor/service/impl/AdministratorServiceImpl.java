@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.lanaco.mentor.dao.AdministratorDAO;
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
+import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.service.AdministratorService;
 
 @Service
@@ -85,6 +86,27 @@ public class AdministratorServiceImpl implements AdministratorService {
 		return "OK, Admin edited!";
 	}
 
-	
+	@Override
+	public String flagNotActive(String username) {
+		Administrator administrator = adminDAO.findOneByUsername(username);
+		if (username == null || username.equals("")) {
+			return "Fail, data missing!";
+		}
+		if (administrator == null) {
+			return "Fail, administrator with provided name not found!";
+		}
+
+		administrator.setIsActive(false);
+		
+		try {
+			adminDAO.save(administrator);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Admin Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Admin Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, Destination deleted!";
+	}
 
 }

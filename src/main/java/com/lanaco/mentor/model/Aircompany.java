@@ -22,7 +22,9 @@ public class Aircompany {
 	@Column(nullable = false)
 	private Boolean isActive;
 	
-	
+	public Aircompany() {
+		
+	}
 	
 	public Aircompany(String name, boolean isActive) {
 		super();
