@@ -40,7 +40,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public String save(Administrator recObj) {
 		if (recObj.getUsername() == null || recObj.getUsername().equals("") || recObj.getPassword() == null
-				|| recObj.getPassword().equals("")) {
+				|| recObj.getPassword().equals("") || recObj.getAirCompany()==null || 
+				recObj.getAirCompany().getName()==null || "".equals(recObj.getAirCompany().getName())) {
 			return "Fail, data missing";
 		}
 		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
@@ -48,7 +49,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Fail, administrator with provided name already exists but name must be unique!";
 		}
 
-		admin = new Administrator(recObj.getUsername(), recObj.getPassword(), true);
+		admin = new Administrator(recObj.getUsername(), recObj.getPassword(),recObj.getAirCompany(), true);
 
 		try {
 			adminDAO.save(admin);

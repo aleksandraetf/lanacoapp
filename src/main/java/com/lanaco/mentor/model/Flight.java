@@ -42,6 +42,17 @@ public class Flight {
 	@JoinColumn(name="airplane", referencedColumnName="id", nullable=false)
 	private Airplane airplane;
 
+	public Flight(Double price, Aircompany airCompany, Destination destination, Airplane airplane
+			, Date flightDate,boolean b) {
+		this.price=price;
+		this.airCompany = airCompany;
+		this.airplane=airplane;
+		this.destination = destination;
+		this.flightDate = flightDate;
+		this.isActive = b;
+		this.seatsReserved=0; // tokom kreiranja leta
+	}
+
 	public Long getId() {
 		return id;
 	}

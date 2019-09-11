@@ -11,6 +11,9 @@ import com.lanaco.mentor.model.Flight;
 
 
 public interface FlightDAO extends CrudRepository<Flight, Long> {
+	
+
+	public ArrayList<Flight> findAll();
 
 	public ArrayList<Flight> findAllByFlightDate(Date flightDate);
 	
