@@ -17,11 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
-import com.lanaco.mentor.service.AdministratorService;
 import com.lanaco.mentor.service.AirCompanyService;
-import com.lanaco.mentor.testutil.SteekillerTestUtil;
 
 
 @RestController
@@ -39,8 +36,8 @@ public class AirCompanyController {
 	
 	
 	@PostMapping(path="/new",produces="application/json")
-	public ResponseEntity<String> save(@RequestBody  Aircompany recObjDestination, HttpServletRequest request){
-		String response=airCompanyService.save(recObjDestination);
+	public ResponseEntity<String> save(@RequestBody  Aircompany recObjAircompany, HttpServletRequest request){
+		String response=airCompanyService.save(recObjAircompany);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -52,8 +49,8 @@ public class AirCompanyController {
 	
 	@PutMapping(path="/edit/{id}",produces="application/json")
 	public ResponseEntity<String> edit(@PathParam(value = "id") Integer id,
-			@RequestBody  Aircompany recObjAirCompany, HttpServletRequest request){
-		String response=airCompanyService.edit(recObjAirCompany);
+			@RequestBody  Aircompany recObjAircompany, HttpServletRequest request){
+		String response=airCompanyService.edit(recObjAircompany);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
