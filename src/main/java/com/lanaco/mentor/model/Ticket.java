@@ -29,6 +29,12 @@ public class Ticket {
 	private Flight flight;
 	
 	
+	public Ticket(Flight flight, User user, Integer numberOfTickets) {
+		this.flight = flight;
+		this.user=user;
+		this.numberOfTickets=numberOfTickets;
+	}
+
 	public Long getId() {
 		return id;
 	}

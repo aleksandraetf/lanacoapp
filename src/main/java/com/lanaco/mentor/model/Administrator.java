@@ -35,10 +35,11 @@ public class Administrator {
 		
 	}
 	
-	public Administrator(String username, String password, boolean b) {
+	public Administrator(String username, String password, Aircompany aircompany, boolean b) {
 		this.username = username;
 		this.password = password;
 		this.isActive = b;
+		this.airCompany = aircompany;
 	}
 
 	public Long getId() {
