@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "157e0327-e701-4d55-b092-c849d6c51d0c",
+		"name": "Flight Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Flight get RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/flight/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Flight post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"price\" : 123.34,\n\t\"flightDate\" : \"2012-10-01T09:45:00.000+02:00\",\n\t\"airplane\" : {\n\t\t\"brand\" : \"nekitamo brand\",\n\t\t\"seats\" : 123\n\t},\n\t\"airCompany\" : {\n\t\t\"name\" : \"izmisljena avio kompanija\"\n\t},\n\t\"destination\" : {\n\t\t\"name\" : \"nekojoscudnijeime\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/flight/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Flight delete RADI",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "13"
+				},
+				"url": {
+					"raw": "localhost:8080/flight/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"flight",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

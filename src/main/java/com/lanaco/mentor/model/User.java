@@ -12,22 +12,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class User {
 	
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonProperty("username")
 	@Column(nullable = false, unique=true)
 	private String username;
 	
+	@JsonProperty("password")
 	@Column(nullable = false)
 	private String password;
 	
+	@JsonProperty("email")
 	@Column(nullable = false)
 	private String email;
 	
-	@JsonProperty
+	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private Boolean isActive;
+	
+	public User() {
+		
+	}
 
 	public User(String username, String password, String email, boolean b) {
 		this.username = username;

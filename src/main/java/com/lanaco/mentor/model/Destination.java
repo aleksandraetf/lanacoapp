@@ -6,27 +6,34 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Destination {
 	
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonProperty("name")
 	@Column(nullable = false, unique=true)
 	private String name;
 	
+	@JsonProperty("isActive")
 	@Column(nullable=false)
 	private Boolean isActive;
 	
+
 	public Destination() {
 		
 	}
 	
-	public Destination(String name) {
+	public Destination(String name,Boolean isActive) {
 		super();
 		this.name = name;
+		this.isActive=isActive;
 	}
 
 	public Long getId() {
@@ -43,5 +50,14 @@ public class Destination {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
 	}
 }

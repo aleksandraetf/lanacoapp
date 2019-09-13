@@ -1,13 +1,17 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.AdministratorDAO;
+import com.lanaco.mentor.dao.FlightDAO;
 import com.lanaco.mentor.dao.TicketDAO;
+import com.lanaco.mentor.dao.UserDAO;
 import com.lanaco.mentor.model.Administrator;
+import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.model.Flight;
 import com.lanaco.mentor.model.Ticket;
 import com.lanaco.mentor.model.User;
@@ -18,12 +22,16 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Autowired
 	public TicketDAO ticketDAO;
+	
+	@Autowired
+	public FlightDAO flightDAO;
+	
+	@Autowired UserDAO userDAO;
 
 
 	@Override
 	public ArrayList<Ticket> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return (ArrayList<Ticket>)ticketDAO.findAll();
 	}
 
 	@Override
@@ -34,13 +42,26 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public String save(Ticket recObj) {
-		if (recObj.getFlight()==null||recObj.getNumberOfTickets()==null || recObj.getNumberOfTickets()<=0
+		if (recObj.getFlight().getId()==null||recObj.getNumberOfTickets()==null || recObj.getNumberOfTickets()<=0
 				|| recObj.getUser()==null || "".equals(recObj.getUser().getUsername())) {
 			return "Fail, data missing";
 		}
-	
-		Ticket ticket = new Ticket(recObj.getFlight(),recObj.getUser(),recObj.getNumberOfTickets());
 
+		Flight flight=flightDAO.findOneById(recObj.getFlight().getId());
+		User user=userDAO.findOneByUsername(recObj.getUser().getUsername());
+		
+		if(flight == null)
+			return "Fail, Ne postoji let sa referenciranim id-em("+recObj.getFlight().getId()+"), karta nije sacuvana!";
+		
+		if(user == null)
+			return "Fail, Ne postoji referencirani korisnicki nalog("+recObj.getUser().getUsername()+"), karta nije sacuvana!";
+		
+		if((flight.getSeatsReserved()+recObj.getNumberOfTickets())>flight.getAirplane().getSeats())
+			return "Fail, Ne postoji dovoljno sjedista za rezervisanje trazenog broja karata!"
+				+"Slobodan broj sjedista je : "+(flight.getAirplane().getSeats()-flight.getSeatsReserved());
+		
+		Ticket ticket = new Ticket(flight,user,recObj.getNumberOfTickets());
+		
 		try {
 			ticketDAO.save(ticket);
 		} catch (IllegalArgumentException ex1) {
@@ -70,9 +91,8 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
-	public String flagNotActive(String recObjName) {
-		//TO DO
-		return null;
+	public ArrayList<Ticket> findAllByUsername(String username){
+		return (ArrayList<Ticket>)ticketDAO.findAllByUser_Username(username);
 	}
 
 }

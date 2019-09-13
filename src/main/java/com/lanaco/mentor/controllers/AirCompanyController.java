@@ -35,7 +35,7 @@ public class AirCompanyController {
 	}
 	
 	
-	@PostMapping(path="/new",produces="application/json")
+	@PostMapping(path="/add",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Aircompany recObjAircompany, HttpServletRequest request){
 		String response=airCompanyService.save(recObjAircompany);
 		if (response.contains("Fail")) {

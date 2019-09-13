@@ -1,6 +1,7 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public ArrayList<Airplane> getAll() {
-		return (ArrayList<Airplane>)airplaneDAO.findAll();
+		return (ArrayList<Airplane>)airplaneDAO.findAll().stream().filter(airplane->airplane.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 	
 	@Override
@@ -42,7 +44,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public String save(Airplane recObj) {
-		if (recObj.getBrand() == null || recObj.getBrand().equals("")) {
+		if (recObj.getBrand() == null || recObj.getBrand().equals("") || recObj.getIsActive()==null) {
 			return "Fail, data missing";
 		}
 		Airplane plane = airplaneDAO.findOneByBrandAndSeats(recObj.getBrand(),recObj.getSeats());
@@ -50,7 +52,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 			return "Fail, user with provided plane already exists but brand and seats must be unique!";
 		}
 
-		plane = new Airplane(recObj.getBrand(), recObj.getSeats());
+		plane = new Airplane(recObj.getBrand(), recObj.getSeats(),recObj.getIsActive());
 
 		try {
 			airplaneDAO.save(plane);
@@ -75,7 +77,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 		}
 		plane.setBrand(recObj.getBrand());
 		plane.setSeats(recObj.getSeats());
-
+		
 		try {
 			airplaneDAO.save(plane);
 		} catch (IllegalArgumentException ex1) {
@@ -90,26 +92,26 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public String flagNotActive(String brand) {
-		//zamijeniti sa getOneByBrand , za sada hardkodovano za testiranje
-		//i dodati u bazu isActive jer navodno treba da moze da se brise
-		ArrayList<Airplane> all = airplaneDAO.findAllByBrand(brand);
 		if (brand == null || brand.equals("")) {
 			return "Fail, data missing!";
 		}
-		if (all == null) {
+
+		Airplane airplane = airplaneDAO.findOneByBrand(brand);
+		if (airplane == null) {
 			return "Fail, airplane with provided brand not found!";
 		}
 
 		//replace with code mark as inactive
+		airplane.setIsActive(false);
 		try {
-			airplaneDAO.delete(all.get(0));
+			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
 			return "Exception in Destination Controller DELETE (ex1), contact admins!";
 		} catch (Exception ex2) {
 			return "Exception in Destination Controller DELETE (ex2), contact admins!";
 		}
 
-		return "OK, Destination deleted!";
+		return "OK, Airplane deleted!";
 	}
 	
 	//potrebno za save i edit

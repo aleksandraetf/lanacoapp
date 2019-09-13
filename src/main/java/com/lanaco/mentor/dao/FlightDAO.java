@@ -23,4 +23,6 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 	public ArrayList<Flight> findAllByAirCompanyAndFlightDate(Aircompany aircompany,Date flightDate);
 	
+	public Flight findOneById(Long id);
+	
 }

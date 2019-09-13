@@ -2,13 +2,18 @@ package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lanaco.mentor.dao.AirCompanyDAO;
+import com.lanaco.mentor.dao.AirplaneDAO;
+import com.lanaco.mentor.dao.DestinationDAO;
 import com.lanaco.mentor.dao.FlightDAO;
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
+import com.lanaco.mentor.model.Airplane;
 import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.model.Flight;
 import com.lanaco.mentor.service.FlightService;
@@ -19,11 +24,20 @@ public class FlightServiceImpl implements FlightService {
 	@Autowired
 	public FlightDAO flightDAO;
 	
+	@Autowired
+	public AirCompanyDAO airCompanyDAO;
+	
+	@Autowired
+	public DestinationDAO destinationDAO;
+	
+	@Autowired
+	public AirplaneDAO airplaneDAO;
 	
 
 	@Override
 	public ArrayList<Flight> getAll() {
-		return (ArrayList<Flight>)flightDAO.findAll();
+		return (ArrayList<Flight>)flightDAO.findAll().stream().filter(flight ->flight.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	
@@ -42,15 +56,24 @@ public class FlightServiceImpl implements FlightService {
 				|| recObj.getPrice()==null) {
 			return "Fail, data missing";
 		}
-		Flight flight;
-		/*Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
-		if (admin != null) {
-			return "Fail, administrator with provided name already exists but name must be unique!";
-		}*/
-
-		flight = new Flight(recObj.getPrice(),recObj.getAirCompany(),recObj.getDestination(),
-				recObj.getAirplane(),recObj.getFlightDate(),true);
+		
+		if(airCompanyDAO.findOneByName(recObj.getAirCompany().getName())==null)
+			return "Fail, ne postoji referencirana Aviokompanija("+recObj.getAirCompany().getName()+"), let nije sacuvan!";
+		
+		if(destinationDAO.findOneByName(recObj.getDestination().getName())==null)
+			return "Fail, ne postoji referencirana Destinacija("+recObj.getDestination().getName()+"), let nije sacuvan!";
+		
+		if(airplaneDAO.findOneByBrand(recObj.getAirplane().getBrand())==null)
+			return "Fail, ne postoji referencirani Brend Aviona("+recObj.getAirplane().getBrand()+"), let nije sacuvan!";
+		
+		Airplane airplane=airplaneDAO.findOneByBrand(recObj.getAirplane().getBrand());
+		Aircompany airCompany=airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
+		Destination destination=destinationDAO.findOneByName(recObj.getDestination().getName());
+		
+		
 		try {
+			Flight flight = new Flight(recObj.getPrice(),airCompany,destination,
+					airplane,recObj.getFlightDate(),true);
 			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
@@ -116,6 +139,33 @@ public class FlightServiceImpl implements FlightService {
 	@Override
 	public ArrayList<Flight> findAllByAirCompanyAndFlightDate(Aircompany aircompany, Date flightDate) {
 	return (ArrayList<Flight>)flightDAO.findAllByAirCompanyAndFlightDate(aircompany, flightDate);
+	}
+
+
+	@Override
+	public String flagNotActive(Long recObjId) {
+		//moze se prosiriti da recimo ako administrator oznaci Flight sa nije aktivan da se automatski
+		//sve karte ciji je let izbrisan vise ne prikazuju
+		//ili da se prikazuju a da se naznaci da je let otkazan/obrisan ili kako vec
+		
+		Flight flight = flightDAO.findOneById(recObjId);
+		if (recObjId == null) {
+			return "Fail, data missing!";
+		}
+		if (flight == null) {
+			return "Fail, Flight with provided id not found!";
+		}
+		flight.setIsActive(false);
+		
+		try {
+			flightDAO.save(flight);
+		} catch (IllegalArgumentException ex1) {
+			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+		} catch (Exception ex2) {
+			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+		}
+
+		return "OK, Flight deleted!";
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,8 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 
 	@Override
 	public ArrayList<Aircompany> getAll() {
-		return (ArrayList<Aircompany>)airCompanyDAO.findAll();
+		return (ArrayList<Aircompany>)airCompanyDAO.findAll().stream().filter(aircompany ->aircompany.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override

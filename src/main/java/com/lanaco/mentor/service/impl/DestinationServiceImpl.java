@@ -1,6 +1,7 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,8 @@ public class DestinationServiceImpl implements DestinationService{
 
 	@Override
 	public ArrayList<Destination> getAll() {
-		return (ArrayList<Destination>) destinationDAO.findAll();
+		return (ArrayList<Destination>) destinationDAO.findAll().stream().filter(destination ->destination.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -28,7 +30,7 @@ public class DestinationServiceImpl implements DestinationService{
 
 	@Override
 	public String save(Destination recObj) {
-		if (recObj.getName() == null || recObj.getName().equals("")) {
+		if (recObj.getName() == null || recObj.getName().equals("") || recObj.getIsActive()==null) {
 			return "Fail, data missing";
 		}
 		Destination destination = destinationDAO.findOneByName(recObj.getName());
@@ -36,7 +38,7 @@ public class DestinationServiceImpl implements DestinationService{
 			return "Fail, destination with provided name already exists but name must be unique!";
 		}
 
-		destination = new Destination(recObj.getName());
+		destination = new Destination(recObj.getName(),recObj.getIsActive());
 
 		try {
 			destinationDAO.save(destination);
@@ -83,8 +85,10 @@ public class DestinationServiceImpl implements DestinationService{
 		}
 
 		//replace with code mark as inactive
+		destination.setIsActive(false);
+		
 		try {
-			destinationDAO.delete(destination);
+			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
 			return "Exception in Destination Controller DELETE (ex1), contact admins!";
 		} catch (Exception ex2) {

@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "c4ebaeca-25ff-433c-a12a-59665061d42e",
+		"name": "Administrator Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Administrator get RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/administrator/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"administrator",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Administrator post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"username123\",\n\t\"password\" : \"password123\",\n\t\"isActive\" : true,\n\t\"airCompany\" : {\n\t\t\"name\" : \"aircompany2\",\n\t\t\"isActive\" : true\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/administrator/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"administrator",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Administrator delete RADI",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username"
+				},
+				"url": {
+					"raw": "localhost:8080/administrator/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"administrator",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "d7261fc2-36e2-4635-af9e-ad94d1efd986",
+		"name": "Ticket Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ticket get za Usera RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "testusername123"
+				},
+				"url": {
+					"raw": "localhost:8080/ticket/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ticket",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ticket get za Supervizora RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/ticket/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ticket",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ticket post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numberOfTickets\" : 122,\n\t\"flight\" : {\n\t\t\"id\" : 14\n\t},\n\t\"user\" : {\n\t\t\"username\" : \"testusername123\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/ticket/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"ticket",
+						"add"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
