@@ -1,6 +1,5 @@
 package com.lanaco.mentor.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;

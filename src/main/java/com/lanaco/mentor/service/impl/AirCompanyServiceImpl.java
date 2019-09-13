@@ -81,7 +81,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		if (aircompany == null) {
 			return "Fail, AirCompany with provided name not found!";
 		}
-		aircompany.setActive(false);
+		aircompany.setIsActive(false);
 
 		try {
 			airCompanyDAO.save(aircompany);

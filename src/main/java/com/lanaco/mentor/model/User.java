@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class User {
@@ -23,6 +25,7 @@ public class User {
 	@Column(nullable = false)
 	private String email;
 	
+	@JsonProperty
 	@Column(nullable = false)
 	private Boolean isActive;
 

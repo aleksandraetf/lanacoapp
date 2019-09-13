@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.AdministratorDAO;
+import com.lanaco.mentor.dao.AirCompanyDAO;
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.model.Destination;
@@ -16,6 +17,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 	
 	@Autowired
 	public AdministratorDAO adminDAO;
+	
+	@Autowired
+	public AirCompanyDAO airCompanyDAO;
+	
 
 	@Override
 	public ArrayList<Administrator> getAll() {
@@ -48,16 +53,19 @@ public class AdministratorServiceImpl implements AdministratorService {
 		if (admin != null) {
 			return "Fail, administrator with provided name already exists but name must be unique!";
 		}
-
-		admin = new Administrator(recObj.getUsername(), recObj.getPassword(),recObj.getAirCompany(), true);
+		Aircompany aircompany = new Aircompany(recObj.getAirCompany().getName(),recObj.getAirCompany().getIsActive());
+		admin = new Administrator(recObj.getUsername(), recObj.getPassword(),aircompany, recObj.getIsActive());
 
 		try {
+			airCompanyDAO.save(aircompany);
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
+			ex1.printStackTrace();
 			return "Exception in Admin Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
 			//log.error("[User Controller exception in POST: ]", ex2);
+			ex2.printStackTrace();
 			return "Exception in Admin Controller POST (ex2), contact admins!";
 		}
 		return "OK, Admin saved";
@@ -79,8 +87,10 @@ public class AdministratorServiceImpl implements AdministratorService {
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in PUT: ]", ex1);
+			ex1.printStackTrace();
 			return "Exception in Admin Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
+			ex2.printStackTrace();
 			//log.error("[User Controller exception in PUT: ]", ex2);
 			return "Exception in Admin Controller PUT (ex2), contact admins!";
 		}
