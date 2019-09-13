@@ -12,13 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class Aircompany {
 	
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@JsonProperty("name")
 	@Column(nullable = false, unique=true)
 	private String name;
 	
+	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private Boolean isActive;
 	

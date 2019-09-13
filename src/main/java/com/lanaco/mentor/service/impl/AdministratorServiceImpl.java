@@ -1,6 +1,7 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public ArrayList<Administrator> getAll() {
-		return (ArrayList<Administrator>)adminDAO.findAll();
+		return (ArrayList<Administrator>)adminDAO.findAll().stream().filter(admin ->admin.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new)); //zivjela java i stream-ovi , linq za sirotinju
 	}
 
 	@Override
@@ -49,15 +51,21 @@ public class AdministratorServiceImpl implements AdministratorService {
 				recObj.getAirCompany().getName()==null || "".equals(recObj.getAirCompany().getName())) {
 			return "Fail, data missing";
 		}
+		Aircompany airCompany= airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
 		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
 		if (admin != null) {
 			return "Fail, administrator with provided name already exists but name must be unique!";
 		}
-		Aircompany aircompany = new Aircompany(recObj.getAirCompany().getName(),recObj.getAirCompany().getIsActive());
-		admin = new Administrator(recObj.getUsername(), recObj.getPassword(),aircompany, recObj.getIsActive());
 
+		if(airCompany==null) {
+			return "Fail, nemoguce kreirati Administratora jer referencirana Aviokompanija("
+					+recObj.getAirCompany().getName()
+					+") ne postoji!";
+		}
+		
+		
 		try {
-			airCompanyDAO.save(aircompany);
+			admin = new Administrator(recObj.getUsername(), recObj.getPassword(),airCompany, recObj.getIsActive());
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
@@ -103,10 +111,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 		if (username == null || username.equals("")) {
 			return "Fail, data missing!";
 		}
+		System.out.println("TESTTTTTTTTTTTT: USERNAME: "+username);
 		if (administrator == null) {
 			return "Fail, administrator with provided name not found!";
 		}
-
+		
+		
 		administrator.setIsActive(false);
 		
 		try {
@@ -117,7 +127,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Exception in Admin Controller DELETE (ex2), contact admins!";
 		}
 
-		return "OK, Destination deleted!";
+		return "OK, Administrator deleted!";
 	}
 
 }

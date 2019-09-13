@@ -1,6 +1,7 @@
 package com.lanaco.mentor.service.impl;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public ArrayList<User> getAll() {
-		return (ArrayList<User>)userDAO.findAll();
+		return ((ArrayList<User>)userDAO.findAll()).stream().filter(airplane->airplane.getIsActive())
+				.collect(Collectors.toCollection(ArrayList::new));
 	}
 
 	@Override
@@ -100,12 +102,17 @@ public class UserServiceImpl implements UserService {
 			return "Exception in Destination Controller DELETE (ex2), contact admins!";
 		}
 
-		return "OK, Destination deleted!";
+		return "OK, User deleted!";
 	}
 
 	@Override
 	public User findOneByUsernameAndPassword(String username, String password) {
 		return userDAO.findOneByUsernameAndPassword(username, password);
+	}
+
+	@Override
+	public User findOneByUsername(String username) {
+		return userDAO.findOneByUsername(username);
 	}
 
 }

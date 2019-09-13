@@ -36,7 +36,7 @@ public class AirplaneController {
 	public ResponseEntity<ArrayList<Airplane>> getAllByBrand(@PathParam(value = "brand") String brand){
 		return new ResponseEntity<ArrayList<Airplane>>(airplaneService.findAllByBrand(brand), HttpStatus.OK);
 	}
-	@PostMapping(path="/new",produces="application/json")
+	@PostMapping(path="/add",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Airplane recObjAirplane, HttpServletRequest request){
 		String response=airplaneService.save(recObjAirplane);
 		if (response.contains("Fail")) {

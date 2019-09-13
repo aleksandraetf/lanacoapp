@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "92ac12b7-5082-4bf1-a347-8ca15639da4a",
+		"name": "Airplane Collection",
+		"description": "Testiranje Airplane",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Airplane get RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/airplane/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airplane",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Airplane post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"brand\" : \"nekitamobrand\",\n\t\"seats\" : 123,\n\t\"isActive\" : true\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/airplane/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airplane",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Airplane delete RADI",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "nekitamobrand"
+				},
+				"url": {
+					"raw": "localhost:8080/airplane/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"airplane",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

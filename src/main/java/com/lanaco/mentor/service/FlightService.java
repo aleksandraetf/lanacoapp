@@ -16,4 +16,6 @@ public ArrayList<Flight> findAllByFlightDate(Date flightDate);
 	public ArrayList<Flight> findAllByFlightDateBetweenAndDestination(Date flightDate1, Date flightDate2,Destination destination);
 	
 	public ArrayList<Flight> findAllByAirCompanyAndFlightDate(Aircompany aircompany,Date flightDate);
+
+	public String flagNotActive(Long recObjId);
 }

@@ -17,6 +17,6 @@ public interface AirplaneDAO extends CrudRepository<Airplane,Long>{
 
 	public Airplane findOneByBrandAndSeats(String brand,int seats);
 	
-	
+	public Airplane findOneByBrand(String brand);
 	
 }

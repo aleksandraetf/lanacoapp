@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,22 +17,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Administrator {
 
 
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonProperty("username")
 	@Column(nullable = false)
 	private String username;
 	
+	@JsonProperty("password")
 	@Column(nullable = false)
 	private String password;
 	
-	@JsonProperty
+	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private Boolean isActive;
 	
 	@ManyToOne
-	@JoinColumn(name="aircompany", referencedColumnName="id", nullable=false)
+	@JoinColumn(referencedColumnName="id", nullable=false)
 	private Aircompany airCompany;
 	
 	public Administrator() {

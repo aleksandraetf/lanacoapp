@@ -12,5 +12,5 @@ public interface TicketService extends GenericServiceInterface<Ticket>{
 	
 	public ArrayList<Ticket> findAllByUser(User user);
 
-	public String flagNotActive(String recObjName);
+	public ArrayList<Ticket> findAllByUsername(String username);
 }

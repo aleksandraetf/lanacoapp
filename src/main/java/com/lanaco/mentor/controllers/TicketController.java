@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lanaco.mentor.model.Ticket;
+import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.TicketService;
+import com.lanaco.mentor.service.UserService;
 
 
 @RestController
@@ -26,40 +28,41 @@ public class TicketController {
 	@Autowired
 	private TicketService ticketService;
 	
+	@Autowired
+	private UserService userService;
 	
+	
+	//iako nije trazeno ostavicemo mogucnost da supervizor pogleda sve karte u bazi
+	//dobro je i za testiranje
+	//takodje vrlo lako se moze filtrirati da vraca samo one karte ciji su letovi aktivni
+	//mozda smo mogli dodati podatak clan u flight da li je zavrsen pa filtrirati prema tome
+	//ili da prema vremenu slijetanja npr ako je null da let jos nije zavrsen
+	//zavisi dal nam u bazi vrijeme slijetanja predstavlja planirano vrijeme slijetanja ili stvarno vrijeme slijetanja
+	//o tom po tom
 	@GetMapping(path="/all", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(){
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(), HttpStatus.OK);
 	}
 	
-	
-	@PostMapping(path="/new",produces="application/json")
-	public ResponseEntity<String> save(@RequestBody  Ticket recObjDestination, HttpServletRequest request){
-		String response=ticketService.save(recObjDestination);
-		if (response.contains("Fail")) {
-			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
-		} else if (response.contains("Exception")) {
-			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		} else {
-			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
-		}
+	//istorija za jednog usera
+	//ostavljamo mogucnost da i supervisor filtrira preko username sa istog servisa
+	//nadamo se da ce se autentikacija rijesavati preko nekog @Auth fazona :D
+	//pa nece bilo ko moci vidjeti istorijat karata bilo kog drugog korisnika
+	@PostMapping(path="/all",produces="application/json")
+	public ResponseEntity<ArrayList<Ticket>> getAllByUser(@RequestBody String username){
+		System.out.println(username+" username");
+		User user = userService.findOneByUsername(username);
+		System.out.println(user);
+		
+		if(user == null) //ako ne postoji korisnik u bazi vraca se BAD_REQUEST
+			return new ResponseEntity<ArrayList<Ticket>>(new ArrayList<Ticket>(), HttpStatus.BAD_REQUEST);
+		
+		return new ResponseEntity<ArrayList<Ticket>>(ticketService.findAllByUsername(username), HttpStatus.OK);
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
-	public ResponseEntity<String> edit(@RequestBody  Ticket recObjDestination, HttpServletRequest request){
-		String response=ticketService.edit(recObjDestination);
-		if (response.contains("Fail")) {
-			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
-		} else if (response.contains("Exception")) {
-			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		} else {
-			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
-		}
-	}
-	
-	@DeleteMapping(path="/delete",produces="application/json")
-	public ResponseEntity<String> flagNotActive(@RequestBody  String recObjName, HttpServletRequest request){
-		String response=ticketService.flagNotActive(recObjName);
+	@PostMapping(path="/add",produces="application/json")
+	public ResponseEntity<String> save(@RequestBody  Ticket recObjTicket, HttpServletRequest request){
+		String response=ticketService.save(recObjTicket);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

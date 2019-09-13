@@ -33,7 +33,7 @@ public class DestinationController {
 	}
 	
 	
-	@PostMapping(path="/new",produces="application/json")
+	@PostMapping(path="/add",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Destination recObjDestination, HttpServletRequest request){
 		String response=destinationService.save(recObjDestination);
 		if (response.contains("Fail")) {

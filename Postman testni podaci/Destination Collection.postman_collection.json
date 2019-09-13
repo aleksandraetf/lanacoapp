@@ -1,0 +1,80 @@
+{
+	"info": {
+		"_postman_id": "a48c0488-99da-4416-a275-07e0f2b06800",
+		"name": "Destination Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Destination get RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/destination/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"destination",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Destination post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"nekojoscudnijeime\",\n\t\"isActive\" : true\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/destination/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"destination",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Destination delete RADI",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "nekocudnoime"
+				},
+				"url": {
+					"raw": "localhost:8080/destination/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"destination",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -9,17 +9,22 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Ticket {
 
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonProperty("numberOfTickets")
 	@Column(nullable = false)
 	private Integer numberOfTickets;
-	
+
+
 	@ManyToOne
 	@JoinColumn(name="user", referencedColumnName="id", nullable=false)
 	private User user;
@@ -28,6 +33,10 @@ public class Ticket {
 	@JoinColumn(name="flight", referencedColumnName="id", nullable=false)
 	private Flight flight;
 	
+	
+	public Ticket() {
+		
+	}
 	
 	public Ticket(Flight flight, User user, Integer numberOfTickets) {
 		this.flight = flight;

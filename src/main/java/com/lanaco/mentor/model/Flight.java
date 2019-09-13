@@ -16,20 +16,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class Flight {
 	
+	@JsonProperty("id")
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@JsonProperty("seatsReserved")
 	@Column(nullable = false)
 	private Integer seatsReserved;
 	
+	@JsonProperty("flightDate")
 	@Column(nullable = false)
 	private Date flightDate;
 	
+	@JsonProperty("price")
 	@Column(nullable = false)
 	private Double price;
-	
-	@JsonProperty
+
+	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private Boolean isActive;
 	
@@ -44,6 +48,10 @@ public class Flight {
 	@ManyToOne
 	@JoinColumn(name="airplane", referencedColumnName="id", nullable=false)
 	private Airplane airplane;
+	
+	public Flight() {
+		
+	}
 
 	public Flight(Double price, Aircompany airCompany, Destination destination, Airplane airplane
 			, Date flightDate,boolean b) {

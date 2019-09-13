@@ -1,0 +1,92 @@
+{
+	"info": {
+		"_postman_id": "9e1623d2-7610-4f42-afdd-54931b9f477f",
+		"name": "AirCompany Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AirCompany get RADI",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/aircompany/all",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AirCompany post RADI",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"izmisljena avio kompanija\",\n\t\"isActive\" : true\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/aircompany/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AirCompany delete RADI",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "aircompany2"
+				},
+				"url": {
+					"raw": "localhost:8080/aircompany/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"aircompany",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
