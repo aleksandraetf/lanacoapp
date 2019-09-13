@@ -17,8 +17,13 @@ public class Airplane {
 	@Column(nullable = false)
 	private String brand;
 	
+	
 	@Column(nullable = false)
 	private Integer seats;
+	
+	@Column(nullable=false)
+	private Boolean isActive;
+	
 	
 	public Airplane() {
 		

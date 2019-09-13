@@ -17,6 +17,9 @@ public class Destination {
 	@Column(nullable = false, unique=true)
 	private String name;
 	
+	@Column(nullable=false)
+	private Boolean isActive;
+	
 	public Destination() {
 		
 	}
