@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Flight {
@@ -27,6 +29,7 @@ public class Flight {
 	@Column(nullable = false)
 	private Double price;
 	
+	@JsonProperty
 	@Column(nullable = false)
 	private Boolean isActive;
 	

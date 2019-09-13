@@ -69,4 +69,10 @@ public class TicketServiceImpl implements TicketService {
 		return (ArrayList<Ticket>)ticketDAO.findAllByUser(user);
 	}
 
+	@Override
+	public String flagNotActive(String recObjName) {
+		//TO DO
+		return null;
+	}
+
 }

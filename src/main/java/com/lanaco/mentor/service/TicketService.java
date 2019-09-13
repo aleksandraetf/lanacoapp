@@ -11,4 +11,6 @@ public interface TicketService extends GenericServiceInterface<Ticket>{
 	public ArrayList<Ticket> findAllByFlight(Flight flight);
 	
 	public ArrayList<Ticket> findAllByUser(User user);
+
+	public String flagNotActive(String recObjName);
 }
