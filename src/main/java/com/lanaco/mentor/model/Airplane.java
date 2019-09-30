@@ -19,8 +19,7 @@ public class Airplane {
 	@JsonProperty("brand")
 	@Column(nullable = false)
 	private String brand;
-	
-	
+		
 	@JsonProperty("seats")
 	@Column(nullable = false)
 	private Integer seats;
@@ -28,13 +27,11 @@ public class Airplane {
 	@JsonProperty("isActive")
 	@Column(nullable=false)
 	private Boolean isActive;
-	
-	
+		
 	public Airplane() {
 		
 	}
-	
-	
+		
 	public Airplane(String brand, Integer seats,Boolean active) {
 		this.brand = brand;
 		this.seats = seats;

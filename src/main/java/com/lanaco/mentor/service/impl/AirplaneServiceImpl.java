@@ -49,7 +49,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 		}
 		Airplane plane = airplaneDAO.findOneByBrandAndSeats(recObj.getBrand(),recObj.getSeats());
 		if (plane != null) {
-			return "Fail, user with provided plane already exists but brand and seats must be unique!";
+			return "Fail, plane with provided brand and seats already exists but brand and seats must be unique!";
 		}
 
 		plane = new Airplane(recObj.getBrand(), recObj.getSeats(),recObj.getIsActive());
@@ -66,17 +66,18 @@ public class AirplaneServiceImpl implements AirplaneService{
 		return "OK, airplane saved";
 	}
 
+	 
 	@Override
 	public String edit(Airplane recObj) {
 		if (recObj.getBrand() == null || recObj.getBrand().equals("")) {
 			return "Fail, data missing!";
 		}
-		Airplane plane = airplaneDAO.findOneByBrandAndSeats(recObj.getBrand(),recObj.getSeats());
+		Airplane plane = airplaneDAO.findOneById(recObj.getId());
 		if (plane == null) {
-			return "Fail, airplane with provided brand and seats not found!";
+			return "Fail, airplane not found!";
 		}
-		plane.setBrand(recObj.getBrand());
-		plane.setSeats(recObj.getSeats());
+		plane.setIsActive(recObj.getIsActive());
+		//nema smisla da se moze promijeniti broj sjedista i brend modela aviona
 		
 		try {
 			airplaneDAO.save(plane);
@@ -106,15 +107,15 @@ public class AirplaneServiceImpl implements AirplaneService{
 		try {
 			airplaneDAO.save(airplane);
 		} catch (IllegalArgumentException ex1) {
-			return "Exception in Destination Controller DELETE (ex1), contact admins!";
+			return "Exception in Airplane Controller DELETE (ex1), contact admins!";
 		} catch (Exception ex2) {
-			return "Exception in Destination Controller DELETE (ex2), contact admins!";
+			return "Exception in Airplane Controller DELETE (ex2), contact admins!";
 		}
 
 		return "OK, Airplane deleted!";
 	}
 	
-	//potrebno za save i edit
+	//potrebno za save
 	@Override
 	public Airplane findOneByBrandAndSeats(String brand, int seats) {
 		return airplaneDAO.findOneByBrandAndSeats(brand, seats);

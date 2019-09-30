@@ -33,9 +33,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String save(User recObj) {
-		if (recObj.getUsername() == null || recObj.getUsername().equals("") || recObj.getPassword() == null
-				|| recObj.getPassword().equals("") || recObj.getEmail() == null
-						|| recObj.getEmail().equals("")) {
+		if (recObj.getUsername() == null || "".equals(recObj.getUsername()) || recObj.getPassword() == null
+				|| "".equals(recObj.getPassword())  || recObj.getEmail() == null
+						|| "".equals(recObj.getEmail()) ) {
 			return "Fail, data missing";
 		}
 		User user = userDAO.findOneByUsername(recObj.getUsername());
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public String edit(User recObj) {
-		if (recObj.getUsername() == null || recObj.getUsername().equals("") || recObj.getPassword() == null
+		if (recObj.getUsername() == null || "".equals(recObj.getUsername()) || recObj.getPassword() == null
 				|| recObj.getPassword().equals("")) {
 			return "Fail, data missing!";
 		}

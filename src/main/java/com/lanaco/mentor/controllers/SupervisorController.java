@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.http.*;
 
 import com.lanaco.mentor.model.Destination;
+import com.lanaco.mentor.model.Flight;
+import com.lanaco.mentor.model.Supervisor;
 import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.AirplaneService;
+import com.lanaco.mentor.service.FlightService;
 import com.lanaco.mentor.service.SupervisorService;
 import com.lanaco.mentor.service.UserService;
 import com.lanaco.mentor.testutil.SteekillerTestUtil;
@@ -28,6 +31,10 @@ public class SupervisorController {
 	private SupervisorService supervisorService;
 	
 	
+	@GetMapping(path="/all", produces = "application/json")
+	public ResponseEntity<ArrayList<Supervisor>> getAll(){
+		return new ResponseEntity<ArrayList<Supervisor>>(supervisorService.getAll(), HttpStatus.OK);
+	}
 	
 	
 }

@@ -47,9 +47,10 @@ public class AirCompanyController {
 		}
 	}
 	
-	@PutMapping(path="/edit/{id}",produces="application/json")
-	public ResponseEntity<String> edit(@PathParam(value = "id") Integer id,
-			@RequestBody  Aircompany recObjAircompany, HttpServletRequest request){
+	
+	@PutMapping(path="/edit",produces="application/json")
+	public ResponseEntity<String> edit(@RequestBody  Aircompany recObjAircompany, 
+			HttpServletRequest request){
 		String response=airCompanyService.edit(recObjAircompany);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);

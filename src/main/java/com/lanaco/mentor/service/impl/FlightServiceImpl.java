@@ -93,21 +93,22 @@ public class FlightServiceImpl implements FlightService {
 				|| recObj.getPrice()==null) {
 			return "Fail, data missing";
 		}
-	/*	Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
-		if (aircompany == null) {
-			return "Fail, air company with provided name not found!";
+		
+		Flight flight = flightDAO.findOneById(recObj.getId());
+		if(flight == null) {
+			return "Fail, flight not found";
 		}
 		
-		*
-		* mogu postojati 2 aviona u isto vrijeme za istu destinaciju sa istim modelom aviona!?
-		* 
-		*
-		*
-		*/
-	//	aircompany.setName(recObj.getName());
+		flight.setFlightDate(recObj.getFlightDate());
+		flight.setDestination(recObj.getDestination());
+		flight.setAirplane(recObj.getAirplane());
+		flight.setAirCompany(recObj.getAirCompany());
+		flight.setIsActive(recObj.getIsActive());
+		flight.setSeatsReserved(recObj.getSeatsReserved());
+		flight.setPrice(recObj.getPrice());
 
 		try {
-			//airCompanyDAO.save(aircompany);
+			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in PUT: ]", ex1);
 			return "Exception in flight Controller PUT (ex1), contact admins!";

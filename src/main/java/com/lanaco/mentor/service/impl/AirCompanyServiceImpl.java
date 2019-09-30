@@ -29,7 +29,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 
 	@Override
 	public String save(Aircompany recObj) {
-		if (recObj.getName() == null || recObj.getName().equals("")) {
+		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing";
 		}
 		Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
@@ -43,24 +43,31 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 			airCompanyDAO.save(aircompany);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
-			return "Exception in User Controller POST (ex1), contact admins!";
+			return "Exception in Aircompany Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
 			//log.error("[User Controller exception in POST: ]", ex2);
-			return "Exception in User Controller POST (ex2), contact admins!";
+			return "Exception in Aircompany Controller POST (ex2), contact admins!";
 		}
 		return "OK, Air company saved";
 	}
 
 	@Override
 	public String edit(Aircompany recObj) {
-		if (recObj.getName() == null || recObj.getName().equals("")) {
+		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing!";
 		}
-		Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
+		Aircompany aircompany = airCompanyDAO.findOneById(recObj.getId());
 		if (aircompany == null) {
-			return "Fail, air company with provided name not found!";
+			return "Fail, air company do not exist!";
+		}
+		
+		Aircompany aircompanyOther = airCompanyDAO.findOneByName(recObj.getName());
+		if (aircompanyOther != null) {
+			return "Fail, air company with provided name already exists but name must be unique!";
+			
 		}
 		aircompany.setName(recObj.getName());
+		aircompany.setIsActive(recObj.getIsActive());
 
 		try {
 			airCompanyDAO.save(aircompany);

@@ -54,13 +54,21 @@ public class DestinationServiceImpl implements DestinationService{
 
 	@Override
 	public String edit(Destination recObj) {
-		if (recObj.getName() == null || recObj.getName().equals("")) {
+		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing!";
 		}
-		Destination destination = destinationDAO.findOneByName(recObj.getName());
+		Destination destination = destinationDAO.findOneById(recObj.getId());
 			if (destination == null) {
-			return "Fail, destination with provided name not found!";
+			return "Fail, destination with provided id not found!";
 		}
+			
+		//provjeravam da li postoji neka druga destinacija sa tim nazivom
+		Destination destinationOther = destinationDAO.findOneByName(recObj.getName());
+		if (destinationOther != null) {
+			return "Fail, destination with provided name already exists but name must be unique!";
+		}
+			
+			
 		destination.setName(recObj.getName());
 
 		try {

@@ -46,8 +46,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String save(Administrator recObj) {
-		if (recObj.getUsername() == null || recObj.getUsername().equals("") || recObj.getPassword() == null
-				|| recObj.getPassword().equals("") || recObj.getAirCompany()==null || 
+		if (recObj.getUsername() == null || "".equals(recObj.getUsername()) || recObj.getPassword() == null
+				|| "".equals(recObj.getPassword()) || recObj.getAirCompany()==null || 
 				recObj.getAirCompany().getName()==null || "".equals(recObj.getAirCompany().getName())) {
 			return "Fail, data missing";
 		}
@@ -81,8 +81,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String edit(Administrator recObj) {
-		if (recObj.getUsername() == null || recObj.getUsername().equals("") || recObj.getPassword() == null
-				|| recObj.getPassword().equals("")) {
+		if (recObj.getUsername() == null || "".equals(recObj.getUsername()) || recObj.getPassword() == null
+				|| "".equals(recObj.getPassword())) {
 			return "Fail, data missing!";
 		}
 		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
@@ -90,6 +90,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 			return "Fail, admin with provided name not found!";
 		}
 		admin.setPassword(recObj.getPassword());
+		admin.setIsActive(recObj.getIsActive());
 
 		try {
 			adminDAO.save(admin);
@@ -108,10 +109,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Override
 	public String flagNotActive(String username) {
 		Administrator administrator = adminDAO.findOneByUsername(username);
-		if (username == null || username.equals("")) {
+		if (username == null || "".equals(username)) {
 			return "Fail, data missing!";
 		}
-		System.out.println("TESTTTTTTTTTTTT: USERNAME: "+username);
 		if (administrator == null) {
 			return "Fail, administrator with provided name not found!";
 		}

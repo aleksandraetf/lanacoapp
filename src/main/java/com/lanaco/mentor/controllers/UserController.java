@@ -48,9 +48,9 @@ public class UserController {
 		}
 	}
 	
-	@PutMapping(headers = { "content-type=application/json" },path = "/edit/{id}")
-	public ResponseEntity<String> edit(@PathParam(value = "id") Integer id,@RequestBody User newUser, HttpServletRequest request) {
-		//promijeniti da prihvata id starog naloga
+	@PutMapping(headers = { "content-type=application/json" },path = "/edit")
+	public ResponseEntity<String> edit(@RequestBody User newUser, HttpServletRequest request) {
+		
 		String response=userService.edit(newUser);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);

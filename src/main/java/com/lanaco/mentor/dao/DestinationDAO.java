@@ -10,6 +10,7 @@ import com.lanaco.mentor.model.Destination;
 public interface DestinationDAO extends CrudRepository<Destination, Long> {
 
 	public Destination findOneByName(String name);
+	public Destination findOneById(Long id);
 	
 	public ArrayList<Destination> findAll();
 
