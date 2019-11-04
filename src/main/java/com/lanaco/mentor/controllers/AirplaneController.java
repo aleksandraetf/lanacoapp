@@ -20,14 +20,14 @@ import com.lanaco.mentor.model.Airplane;
 import com.lanaco.mentor.service.AirplaneService;
 
 @RestController
-@RequestMapping(path = "/airplane")
+@RequestMapping(path = "/api/airplane")
 public class AirplaneController {
 	
 	@Autowired
 	private AirplaneService airplaneService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Airplane>> getAll(){
 		return new ResponseEntity<ArrayList<Airplane>>(airplaneService.getAll(), HttpStatus.OK);
 	}
@@ -36,7 +36,7 @@ public class AirplaneController {
 	public ResponseEntity<ArrayList<Airplane>> getAllByBrand(@PathParam(value = "brand") String brand){
 		return new ResponseEntity<ArrayList<Airplane>>(airplaneService.findAllByBrand(brand), HttpStatus.OK);
 	}
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Airplane recObjAirplane, HttpServletRequest request){
 		String response=airplaneService.save(recObjAirplane);
 		if (response.contains("Fail")) {
@@ -48,7 +48,7 @@ public class AirplaneController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Airplane recObjAirplane, HttpServletRequest request){
 		String response=airplaneService.edit(recObjAirplane);
 		if (response.contains("Fail")) {
@@ -60,7 +60,7 @@ public class AirplaneController {
 		}
 	}
 	
-	@DeleteMapping(path="/delete",produces="application/json")
+	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  String recObjName, HttpServletRequest request){
 		String response=airplaneService.flagNotActive(recObjName);
 		if (response.contains("Fail")) {

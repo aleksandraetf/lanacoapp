@@ -24,19 +24,19 @@ import com.lanaco.mentor.service.UserService;
 import com.lanaco.mentor.testutil.SteekillerTestUtil;
 
 @RestController
-@RequestMapping(path = "/user")
+@RequestMapping(path = "/api/user")
 public class UserController {
 
 	@Autowired
 	private UserService userService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<User>> getAll(){
 		return new ResponseEntity<ArrayList<User>>(userService.getAll(), HttpStatus.OK);
 	}
 	
-	@PostMapping(headers = { "content-type=application/json" },path = "/add")
+	@PostMapping(headers = { "content-type=application/json" },path = "/")
 	public ResponseEntity<String> save(@RequestBody  User recObjUser, HttpServletRequest request) {
 		String response=userService.save(recObjUser);
 		if (response.contains("Fail")) {
@@ -48,7 +48,7 @@ public class UserController {
 		}
 	}
 	
-	@PutMapping(headers = { "content-type=application/json" },path = "/edit")
+	@PutMapping(headers = { "content-type=application/json" },path = "/")
 	public ResponseEntity<String> edit(@RequestBody User newUser, HttpServletRequest request) {
 		
 		String response=userService.edit(newUser);
@@ -61,7 +61,7 @@ public class UserController {
 		}
 	}
 	
-	@DeleteMapping(value = "/delete", headers = { "content-type=application/json" })
+	@DeleteMapping(value = "/", headers = { "content-type=application/json" })
 	public ResponseEntity<String> delete(@RequestBody String username, HttpServletRequest request) {
 		String response=userService.flagNotActive(username);
 		if (response.contains("Fail")) {
