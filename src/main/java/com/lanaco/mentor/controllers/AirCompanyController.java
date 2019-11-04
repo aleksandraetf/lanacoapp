@@ -22,20 +22,20 @@ import com.lanaco.mentor.service.AirCompanyService;
 
 
 @RestController
-@RequestMapping(path = "/aircompany")
+@RequestMapping(path = "/api/aircompany")
 public class AirCompanyController {
 
 	@Autowired
 	private AirCompanyService airCompanyService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Aircompany>> getAll(){
 		return new ResponseEntity<ArrayList<Aircompany>>(airCompanyService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Aircompany recObjAircompany, HttpServletRequest request){
 		String response=airCompanyService.save(recObjAircompany);
 		if (response.contains("Fail")) {
@@ -48,7 +48,7 @@ public class AirCompanyController {
 	}
 	
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Aircompany recObjAircompany, 
 			HttpServletRequest request){
 		String response=airCompanyService.edit(recObjAircompany);
@@ -61,7 +61,7 @@ public class AirCompanyController {
 		}
 	}
 	
-	@DeleteMapping(path="/delete",produces="application/json")
+	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  String name, HttpServletRequest request){
 		String response=airCompanyService.flagNotActive(name);
 		if (response.contains("Fail")) {

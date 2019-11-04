@@ -19,20 +19,20 @@ import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.service.AdministratorService;
 
 @RestController
-@RequestMapping(path = "/administrator")
+@RequestMapping(path = "/api/administrator")
 public class AdministratorController {
 	
 	@Autowired
 	private AdministratorService administratorService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Administrator>> getAll(){
 		return new ResponseEntity<ArrayList<Administrator>>(administratorService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Administrator recObjAdmin, HttpServletRequest request){
 		String response=administratorService.save(recObjAdmin);
 		if (response.contains("Fail")) {
@@ -44,7 +44,7 @@ public class AdministratorController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Administrator recObjAdmin, HttpServletRequest request){
 		String response=administratorService.edit(recObjAdmin);
 		if (response.contains("Fail")) {
@@ -56,7 +56,7 @@ public class AdministratorController {
 		}
 	}
 	
-	@DeleteMapping(path="/delete",produces="application/json")
+	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  String username, HttpServletRequest request){
 		String response=administratorService.flagNotActive(username);
 		if (response.contains("Fail")) {

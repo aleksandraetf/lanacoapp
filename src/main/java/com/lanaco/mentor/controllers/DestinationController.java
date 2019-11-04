@@ -20,20 +20,20 @@ import com.lanaco.mentor.service.DestinationService;
 
 
 @RestController
-@RequestMapping(path = "/destination")
+@RequestMapping(path = "/api/destination")
 public class DestinationController {
 
 	@Autowired
 	private DestinationService destinationService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Destination>> getAll(){
 		return new ResponseEntity<ArrayList<Destination>>(destinationService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Destination recObjDestination, HttpServletRequest request){
 		String response=destinationService.save(recObjDestination);
 		if (response.contains("Fail")) {
@@ -45,7 +45,7 @@ public class DestinationController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Destination recObjDestination, HttpServletRequest request){
 		String response=destinationService.edit(recObjDestination);
 		if (response.contains("Fail")) {
@@ -57,7 +57,7 @@ public class DestinationController {
 		}
 	}
 	
-	@DeleteMapping(path="/delete",produces="application/json")
+	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  String recObjName, HttpServletRequest request){
 		String response=destinationService.flagNotActive(recObjName);
 		if (response.contains("Fail")) {

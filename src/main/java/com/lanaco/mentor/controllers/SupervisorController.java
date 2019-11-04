@@ -24,14 +24,14 @@ import com.lanaco.mentor.service.UserService;
 import com.lanaco.mentor.testutil.SteekillerTestUtil;
 
 @RestController
-@RequestMapping(path = "/supervisor")
+@RequestMapping(path = "/api/supervisor")
 public class SupervisorController {
 	
 	@Autowired
 	private SupervisorService supervisorService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Supervisor>> getAll(){
 		return new ResponseEntity<ArrayList<Supervisor>>(supervisorService.getAll(), HttpStatus.OK);
 	}

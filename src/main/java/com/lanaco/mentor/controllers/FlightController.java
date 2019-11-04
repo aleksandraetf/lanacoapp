@@ -23,20 +23,20 @@ import com.lanaco.mentor.service.FlightService;
 import com.lanaco.mentor.testutil.SteekillerTestUtil;
 
 @RestController
-@RequestMapping(path = "/flight")
+@RequestMapping(path = "/api/flight")
 public class FlightController {
 	
 	@Autowired
 	private FlightService flightService;
 	
 	
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAll(){
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
 	}
 	
 	
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Flight recObjFlight, HttpServletRequest request){
 		String response=flightService.save(recObjFlight);
 		if (response.contains("Fail")) {
@@ -48,7 +48,7 @@ public class FlightController {
 		}
 	}
 	
-	@PutMapping(path="/edit",produces="application/json")
+	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Flight recObjFlight, HttpServletRequest request){
 		String response=flightService.edit(recObjFlight);
 		if (response.contains("Fail")) {
@@ -60,7 +60,7 @@ public class FlightController {
 		}
 	}
 	
-	@DeleteMapping(path="/delete",produces="application/json")
+	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  Long recObjId, HttpServletRequest request){
 		String response=flightService.flagNotActive(recObjId);
 		if (response.contains("Fail")) {

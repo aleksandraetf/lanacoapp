@@ -22,7 +22,7 @@ import com.lanaco.mentor.service.UserService;
 
 
 @RestController
-@RequestMapping(path = "/ticket")
+@RequestMapping(path = "/api/ticket")
 public class TicketController {
 
 	@Autowired
@@ -39,7 +39,7 @@ public class TicketController {
 	//ili da prema vremenu slijetanja npr ako je null da let jos nije zavrsen
 	//zavisi dal nam u bazi vrijeme slijetanja predstavlja planirano vrijeme slijetanja ili stvarno vrijeme slijetanja
 	//o tom po tom
-	@GetMapping(path="/all", produces = "application/json")
+	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Ticket>> getAll(){
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(), HttpStatus.OK);
 	}
@@ -60,7 +60,7 @@ public class TicketController {
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.findAllByUsername(username), HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/add",produces="application/json")
+	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Ticket recObjTicket, HttpServletRequest request){
 		String response=ticketService.save(recObjTicket);
 		if (response.contains("Fail")) {
