@@ -30,7 +30,7 @@ public class DestinationServiceImpl implements DestinationService{
 
 	@Override
 	public String save(Destination recObj) {
-		if (recObj.getName() == null || recObj.getName().equals("") || recObj.getIsActive()==null) {
+		if (recObj.getName() == null || recObj.getName().equals("")){
 			return "Fail, data missing";
 		}
 		Destination destination = destinationDAO.findOneByName(recObj.getName());
@@ -38,7 +38,7 @@ public class DestinationServiceImpl implements DestinationService{
 			return "Fail, destination with provided name already exists but name must be unique!";
 		}
 
-		destination = new Destination(recObj.getName(),recObj.getIsActive());
+		destination = new Destination(recObj.getName(),true);
 
 		try {
 			destinationDAO.save(destination);

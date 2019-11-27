@@ -36,6 +36,7 @@ public class DestinationController {
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Destination recObjDestination, HttpServletRequest request){
 		String response=destinationService.save(recObjDestination);
+		System.out.println("Uslo u destinaciju");
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
