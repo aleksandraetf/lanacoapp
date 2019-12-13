@@ -5,6 +5,7 @@ import Destination from './Destination';
 import Login from './Login';
 import Airplane from './Airplane';
 import Aircompany from './Aircompany';
+import Flight from './Flight';
 
 class App extends Component {
   render() {
@@ -35,6 +36,24 @@ class App extends Component {
             render={props => {
               return (
                 <Destination {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/airplane"
+            exact={true}
+            render={props => {
+              return (
+                <Airplane {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/flight"
+            exact={true}
+            render={props => {
+              return (
+                <Flight {...props} />
               );
             }}
           />

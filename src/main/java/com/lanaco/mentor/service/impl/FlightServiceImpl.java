@@ -50,25 +50,30 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String save(Flight recObj) {
-		if (recObj.getFlightDate()==null || recObj.getAirCompany()==null || 
-				"".equals(recObj.getAirCompany().getName()) || recObj.getAirplane()==null ||
-				recObj.getDestination()==null || "".equals(recObj.getDestination().getName()) 
+		System.out.println("+++++++++++++++++++++++++++++++++++++++");
+		System.out.println("Prvi:"+recObj.getFlightDate()+" companyid:"
+				+recObj.getAirCompany().getId()+"destid:"+recObj.getDestination().getId()
+				+"price:"+recObj.getPrice()+"seatsRes:"+recObj.getSeatsReserved()
+				+"airplaneid:"+recObj.getAirplane().getId());
+		if (recObj.getFlightDate()==null || recObj.getAirCompany()==null
+				|| recObj.getAirplane()==null ||
+				recObj.getDestination()==null 
 				|| recObj.getPrice()==null) {
 			return "Fail, data missing";
 		}
 		
-		if(airCompanyDAO.findOneByName(recObj.getAirCompany().getName())==null)
+		if(airCompanyDAO.findOneById(recObj.getAirCompany().getId())==null)
 			return "Fail, ne postoji referencirana Aviokompanija("+recObj.getAirCompany().getName()+"), let nije sacuvan!";
 		
-		if(destinationDAO.findOneByName(recObj.getDestination().getName())==null)
+		if(destinationDAO.findOneById(recObj.getDestination().getId())==null)
 			return "Fail, ne postoji referencirana Destinacija("+recObj.getDestination().getName()+"), let nije sacuvan!";
 		
-		if(airplaneDAO.findOneByBrand(recObj.getAirplane().getBrand())==null)
+		if(airplaneDAO.findOneById(recObj.getAirplane().getId())==null)
 			return "Fail, ne postoji referencirani Brend Aviona("+recObj.getAirplane().getBrand()+"), let nije sacuvan!";
 		
-		Airplane airplane=airplaneDAO.findOneByBrand(recObj.getAirplane().getBrand());
-		Aircompany airCompany=airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
-		Destination destination=destinationDAO.findOneByName(recObj.getDestination().getName());
+		Airplane airplane=airplaneDAO.findOneById(recObj.getAirplane().getId());
+		Aircompany airCompany=airCompanyDAO.findOneById(recObj.getAirCompany().getId());
+		Destination destination=destinationDAO.findOneById(recObj.getDestination().getId());
 		
 		
 		try {

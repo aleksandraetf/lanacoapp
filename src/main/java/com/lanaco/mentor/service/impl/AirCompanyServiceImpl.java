@@ -18,8 +18,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 
 	@Override
 	public ArrayList<Aircompany> getAll() {
-		return (ArrayList<Aircompany>)airCompanyDAO.findAll().stream().filter(aircompany ->aircompany.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Aircompany>)airCompanyDAO.findAllByIsActive(true);
 	}
 
 	@Override

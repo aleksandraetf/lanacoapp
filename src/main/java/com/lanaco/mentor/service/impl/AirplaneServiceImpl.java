@@ -44,7 +44,8 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public String save(Airplane recObj) {
-		if (recObj.getBrand() == null || recObj.getBrand().equals("") || recObj.getIsActive()==null) {
+		if (recObj.getBrand() == null || recObj.getBrand().equals("") || recObj.getSeats()==null
+				) {
 			return "Fail, data missing";
 		}
 		Airplane plane = airplaneDAO.findOneByBrandAndSeats(recObj.getBrand(),recObj.getSeats());
@@ -52,7 +53,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 			return "Fail, plane with provided brand and seats already exists but brand and seats must be unique!";
 		}
 
-		plane = new Airplane(recObj.getBrand(), recObj.getSeats(),recObj.getIsActive());
+		plane = new Airplane(recObj.getBrand(), recObj.getSeats(),true);
 
 		try {
 			airplaneDAO.save(plane);
