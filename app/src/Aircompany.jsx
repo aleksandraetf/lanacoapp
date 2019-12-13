@@ -18,6 +18,7 @@ class AircompanyPage extends Component {
 		//this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleDelete=this.handleDelete.bind(this);
 
 
         this.state = { aircompanies: [], showModal: false, message: "", name: "" }
@@ -61,6 +62,27 @@ class AircompanyPage extends Component {
         this.setState({ [event.target.name]: event.target.value });
     }
 
+	handleDelete(event){
+		console.log(event.target.value);
+		let dataToSend = {
+            name: event.target.value
+        }
+        fetch('/api/aircompany/',
+            {
+                method: 'DELETE',
+                headers:
+                {
+
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    credentials: 'include'
+                },
+                mode:'cors',
+                credentials:'include',
+                body: JSON.stringify(dataToSend),
+            }
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+	}
 
     handleSubmit(event) {
         let dataToSend = {
@@ -102,7 +124,7 @@ class AircompanyPage extends Component {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Destination Name:
+                                        Aircompany name:
                                     </InputGroupAddon>
                                     <Input
                                         type="text" name="name" id="name" value={this.state.name} onChange={this.handleInputChange}
@@ -127,14 +149,20 @@ class AircompanyPage extends Component {
                 </Container>
                 <Container>
                     <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Aircompany</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
                     <Table >
                         <thead>
-                            <tr><th>ID</th><th>Name</th></tr>
+                            <tr><th>ID</th><th>Name</th><th>Delete</th></tr>
                         </thead>
                         <tbody>
                             {
                                 aircompanies.map((aircompany) => {
-                                    return <tr key={aircompany.id}><td>{aircompany.id}</td><td>{aircompany.name}</td></tr>
+                                    return <tr key={aircompany.id}><td>{aircompany.id}</td><td>{aircompany.name}</td><td>
+											<Button value={aircompany.name} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+										</td></tr>
                                 })
                             }
                         </tbody>

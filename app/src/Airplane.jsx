@@ -19,6 +19,7 @@ class AirplanePage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleInputChangeSeats = this.handleInputChangeSeats.bind(this);
+		this.handleDelete=this.handleDelete.bind(this);
 
 
         this.state = { airplanes : [], showModal: false, message: "", brand: "" , seats: 0}
@@ -61,13 +62,34 @@ class AirplanePage extends Component {
 
 
     handleInputChange(event) {
-        this.setState({ [event.target.brand]: event.target.value});
+        this.setState({ [event.target.name]: event.target.value});
     }
 
     handleInputChangeSeats(event) {
-        this.setState({ [event.target.seats]: event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     }
+	
+	handleDelete(event){
+		console.log(event.target.value);
+		let dataToSend = {
+            brand: event.target.value
+        }
+        fetch('/api/airplane/',
+            {
+                method: 'DELETE',
+                headers:
+                {
 
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    credentials: 'include'
+                },
+                mode:'cors',
+                credentials:'include',
+                body: JSON.stringify(dataToSend),
+            }
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+	}
 
     handleSubmit(event) {
         let dataToSend = {
@@ -80,7 +102,6 @@ class AirplanePage extends Component {
                 method: 'POST',
                 headers:
                 {
-
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     credentials: 'include'
@@ -89,11 +110,10 @@ class AirplanePage extends Component {
                 //credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Airplane Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
+        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Airplane Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
     }
 
     render() {
-        console.log("RENDER:")
         console.log(this.state);
         let airplanes = [...this.state.airplanes];
         return (
@@ -145,6 +165,10 @@ class AirplanePage extends Component {
                 </Container>
                 <Container>
                     <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Airplane</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Brand</th><th>Seats</th></tr>
@@ -153,7 +177,11 @@ class AirplanePage extends Component {
                             
                             {
                                 airplanes.map((airplane) => {
-                                    return <tr key={airplane.id}><td>{airplane.id}</td><td>{airplane.brand}</td><td>{airplane.seats}</td></tr>
+                                    return <tr key={airplane.id}><td>{airplane.id}</td><td>{airplane.brand}</td><td>{airplane.seats}</td>
+										<td>
+												<Button style={{ backgroundColor: "#923cb5" }} value={airplane.brand} onClick={this.handleDelete}>DELETE</Button>
+										</td>
+									</tr>
                                 })
                             }
                         </tbody>

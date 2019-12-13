@@ -18,6 +18,7 @@ class DestinationPage extends Component {
 		//this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleDelete=this.handleDelete.bind(this);
 
 
         this.state = { destinations: [], showModal: false, message: "", name: "" }
@@ -62,6 +63,28 @@ class DestinationPage extends Component {
     handleInputChange(event) {
         this.setState({ [event.target.name]: event.target.value });
     }
+	
+	handleDelete(event){
+		console.log(event.target.value);
+		let dataToSend = {
+            name: event.target.value
+        }
+        fetch('/api/destination/',
+            {
+                method: 'DELETE',
+                headers:
+                {
+
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    credentials: 'include'
+                },
+                mode:'cors',
+                credentials:'include',
+                body: JSON.stringify(dataToSend),
+            }
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+	}
 
 
     handleSubmit(event) {
@@ -130,6 +153,10 @@ class DestinationPage extends Component {
                 </Container>
                 <Container>
                     <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Destination</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Name</th></tr>
@@ -137,7 +164,13 @@ class DestinationPage extends Component {
                         <tbody>
                             {
                                 destinations.map((destination) => {
-                                    return <tr key={destination.id}><td>{destination.id}</td><td>{destination.name}</td></tr>
+                                    return <tr key={destination.id}><td>{destination.id}</td><td>{destination.name}</td>
+									
+									<td>
+										<Button value={destination.name} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+									</td>
+									
+									</tr>
                                 })
                             }
                         </tbody>
