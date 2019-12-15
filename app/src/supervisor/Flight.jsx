@@ -158,66 +158,65 @@ class AirplanePage extends Component {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Flight Date:
+                                        Datum leta:
                                     </InputGroupAddon>
                                     <Input
                                         type="date" name="date" id="date" value={this.state.date} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
-
+                                <br></br>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Reserved Seats:
+                                       Broj sjedista za rezervaciju:
                                     </InputGroupAddon>
                                     <Input
                                         type="number" name="reserved" id="reserved" value={this.state.reserved} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
-								
+								<br></br>
 								<InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Price:
+                                        Cijena:
                                     </InputGroupAddon>
                                     <Input
 									type="number" name="price" id="price" value={this.state.price} onChange={this.handleInputChange}
                                     ></Input>
-                                </InputGroup>
+                                </InputGroup><br></br>
 								<select ref="aircompanyRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Aviokpmpaniju </option>
+									className="custom-search-select form-control">
+									<option value="" selected disabled hidden> Izaberite Aviokompaniju </option>
 									{	
 										aircompanies.map((a)=> <option key={"a.id"} value={a.name}>
 											{a.name}</option>)
 									}
-								</select>
+								</select><br></br>
 								<select ref="airplaneRef" name="custom-search-select"
-									className="custom-search-select">
+									className="custom-search-select form-control">
 									<option value="" selected disabled hidden> Izaberite Avion </option>
 									{	
 										airplanes.map(
 											(a)=> <option key={"a.id"} value={a.brand}>
 											{a.brand}</option>)
 									}
-								</select>
+								</select><br></br>
 								<select ref="destinationRef" name="custom-search-select"
-									className="custom-search-select">
+									className="custom-search-select form-control">
 									<option value="" selected disabled hidden> Izaberite Destinaciju </option>
 									{	
 										destinations.map((a)=> <option key={"a.id"} value={a.name}>
 											{a.name}</option>)
 									}
-								</select>
-								
+								</select><br></br>
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Flight</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj let</Button>
                             </div>
                         </ModalBody>
                     </Modal>
                 </Container>
                 <Container>
-                    <Table>
+                    <Table striped bordered hover>
                         <tbody>
                             <tr>
                                 <td><h1 style={{ color: "#923cb5" }}>Flight Page</h1></td>
@@ -226,24 +225,27 @@ class AirplanePage extends Component {
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Flight</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/airplane" }>Airplanes</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
-                    <Table >
+                <Button onClick={this.logOut}>Log Out</Button>
+                 <br></br><br></br>
+                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novi let</Button>
+                    <br></br><br></br>
+					<Button  onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
+					<Button onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
+					<Button  onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
+					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+                    <br></br>
+				   <Table striped bordered hover>
                         <thead>
-                            <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
+                            <tr><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
                         </thead>
                         <tbody>
                             {
                                 flights.map((flight) => {
-                                    return <tr key={flight.id}><td>{flight.id}</td><td>{flight.price}</td><td>{flight.seatsReserver}</td>
+                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserver}</td>
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
 									<td>{flight.flightDate}</td>
 									<td>
-										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+										<Button value={flight.id} onClick={this.handleDelete}>DELETE</Button>
 									</td>
 									</tr>
                                 })

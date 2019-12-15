@@ -44,6 +44,10 @@ public class LoginDTO {
 	public void setRequestedRole(String requestedRole) {
 		this.requestedRole = requestedRole;
 	}
+	
+	public LoginDTO() {
+		
+	}
 
 
 	public LoginDTO(String email, String password, String requestedRole) {

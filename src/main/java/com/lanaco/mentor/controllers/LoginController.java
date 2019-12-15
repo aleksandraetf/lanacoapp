@@ -28,8 +28,6 @@ import com.lanaco.mentor.model.Role;
 import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.UserService;
 
-import jdk.jfr.ContentType;
-
 
 @RestController
 @RequestMapping(path = "")

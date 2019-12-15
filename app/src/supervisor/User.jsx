@@ -168,7 +168,7 @@ class AirplanePage extends Component {
 					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
 					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
 					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>{'  '}
-                    <Table >
+                    <Table striped bordered hover >
                         <thead>
                             <tr><th>ID</th><th>Brand</th><th>Seats</th></tr>
                         </thead>

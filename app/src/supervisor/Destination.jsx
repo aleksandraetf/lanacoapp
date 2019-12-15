@@ -126,7 +126,7 @@ logOut() {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Destination Name:
+                                        Ime destinacije:
                                     </InputGroupAddon>
                                     <Input
                                         type="text" name="name" id="name" value={this.state.name} onChange={this.handleInputChange}
@@ -135,7 +135,7 @@ logOut() {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Destination</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj destinaciju</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -144,29 +144,31 @@ logOut() {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Destination Page</h1></td>
+                                <td><h1 style={{  }}>Destinacije</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Destination</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/airplane" }>Airplanes</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
-                    <Table >
+                <Button className="btn-default" onClick={this.logOut}>Log Out</Button>
+                 <br></br> <br></br>
+                    <Button style={{  }} onClick={() => this.toggle('showModal')}>Dodaj novu destinaciju</Button>
+                    <br></br> <br></br>
+					<Button className="btn-default" onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
+					<Button className="btn-default" onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
+					<Button className="btn-default" onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
+					<Button className="btn-default" onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+				   <Table striped bordered hover>
                         <thead>
-                            <tr><th>ID</th><th>Name</th></tr>
+                            <tr><th>Ime</th><th></th></tr>
                         </thead>
                         <tbody>
                             {
                                 destinations.map((destination) => {
-                                    return <tr key={destination.id}><td>{destination.id}</td><td>{destination.name}</td>
+                                    return <tr key={destination.id}><td>{destination.name}</td>
 									
 									<td>
-										<Button value={destination.name} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+										<Button value={destination.name} style={{ }} onClick={this.handleDelete}>Obrisi</Button>
 									</td>
 									
 									</tr>
