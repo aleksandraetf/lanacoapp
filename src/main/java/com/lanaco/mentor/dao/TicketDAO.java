@@ -19,4 +19,6 @@ public interface TicketDAO extends CrudRepository<Ticket, Long> {
 	
 	public Flight findOneByFlight_Id(Long id);
 	
+	public ArrayList<Ticket> findAllByUser_Email(String email);
+	
 }

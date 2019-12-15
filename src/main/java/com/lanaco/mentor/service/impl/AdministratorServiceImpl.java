@@ -25,23 +25,22 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public ArrayList<Administrator> getAll() {
-		return (ArrayList<Administrator>)adminDAO.findAll().stream().filter(admin ->admin.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new)); //zivjela java i stream-ovi , linq za sirotinju
+		return (ArrayList<Administrator>)adminDAO.findAllByIsActive(true); 
 	}
 
 	@Override
 	public Administrator getOne(String name) {
-		return adminDAO.findOneByUsername(name);
+		return adminDAO.findOneByUsernameAndIsActive(name,true);
 	}
 	
 	@Override
 	public ArrayList<Administrator> findAllByAirCompany(Aircompany airCompany) {
-		return (ArrayList<Administrator>)adminDAO.findAllByAirCompany(airCompany);
+		return (ArrayList<Administrator>)adminDAO.findAllByAirCompanyAndIsActive(airCompany,true);
 	}
 
 	@Override
 	public Administrator findOneByUsernameAndPassword(String username, String password) {
-		return adminDAO.findOneByUsernameAndPassword(username, password);
+		return adminDAO.findOneByUsernameAndPasswordAndIsActive(username, password,true);
 	}
 
 	@Override
@@ -51,8 +50,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 				recObj.getAirCompany().getName()==null || "".equals(recObj.getAirCompany().getName())) {
 			return "Fail, data missing";
 		}
-		Aircompany airCompany= airCompanyDAO.findOneByName(recObj.getAirCompany().getName());
-		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
+		Aircompany airCompany= airCompanyDAO.findOneByNameAndIsActive(recObj.getAirCompany().getName(),true);
+		Administrator admin = adminDAO.findOneByUsernameAndIsActive(recObj.getUsername(),true);
 		if (admin != null) {
 			return "Fail, administrator with provided name already exists but name must be unique!";
 		}
@@ -85,7 +84,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 				|| "".equals(recObj.getPassword())) {
 			return "Fail, data missing!";
 		}
-		Administrator admin = adminDAO.findOneByUsername(recObj.getUsername());
+		Administrator admin = adminDAO.findOneByUsernameAndIsActive(recObj.getUsername(),true);
 		if (admin == null) {
 			return "Fail, admin with provided name not found!";
 		}
@@ -108,7 +107,7 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String flagNotActive(String username) {
-		Administrator administrator = adminDAO.findOneByUsername(username);
+		Administrator administrator = adminDAO.findOneByUsernameAndIsActive(username,true);
 		if (username == null || "".equals(username)) {
 			return "Fail, data missing!";
 		}

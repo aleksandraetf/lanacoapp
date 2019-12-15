@@ -8,5 +8,5 @@ import com.lanaco.mentor.model.Role;
 public interface RoleDAO extends CrudRepository<Role, Long> {
 
 	public Role findByRole(String role);
-
+	
 }

@@ -3,7 +3,7 @@ import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { checkIfLogged } from './common.js';
+import { checkIfLogged } from '../common.js';
 
 class AirplanePage extends Component {
 
@@ -15,7 +15,7 @@ class AirplanePage extends Component {
                 this.props.history.push('/')
             }
         });
-      //  this.logOut = this.logOut.bind(this);
+		this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleDelete=this.handleDelete.bind(this);
@@ -69,8 +69,8 @@ class AirplanePage extends Component {
         });
     };
 
-  /*  logOut() {
-        fetch('/auth/logout',
+	logOut() {
+        fetch('/logout/',
             {
                 method: 'GET',
                 mode: 'cors',
@@ -79,9 +79,8 @@ class AirplanePage extends Component {
                     credentials: 'include'
                 },
             }
-        ).catch(() => this.props.history.push('/'));
+        ).then(() => window.location="/login");
     }
-*/
 
 	handleDelete(event){
 		console.log(event.target.value);
@@ -185,7 +184,7 @@ class AirplanePage extends Component {
                                 </InputGroup>
 								<select ref="aircompanyRef" name="custom-search-select"
 									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Aviokompaniju </option>
+									<option value="" selected disabled hidden> Izaberite Aviokpmpaniju </option>
 									{	
 										aircompanies.map((a)=> <option key={"a.id"} value={a.name}>
 											{a.name}</option>)
@@ -228,10 +227,11 @@ class AirplanePage extends Component {
                 </Container>
                 <Container>
                     <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Flight</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/flight" }>Flights</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/destination" }>Destinations</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/aircompany" }>Aircompanies</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/airplane" }>Airplanes</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>

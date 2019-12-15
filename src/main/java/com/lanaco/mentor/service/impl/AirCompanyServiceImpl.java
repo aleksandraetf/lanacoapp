@@ -23,7 +23,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 
 	@Override
 	public Aircompany getOne(String name) {
-		return airCompanyDAO.findOneByName(name);
+		return airCompanyDAO.findOneByNameAndIsActive(name,true);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing";
 		}
-		Aircompany aircompany = airCompanyDAO.findOneByName(recObj.getName());
+		Aircompany aircompany = airCompanyDAO.findOneByNameAndIsActive(recObj.getName(),true);
 		if (aircompany != null) {
 			return "Fail, air company with provided name already exists but name must be unique!";
 		}
@@ -55,12 +55,12 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing!";
 		}
-		Aircompany aircompany = airCompanyDAO.findOneById(recObj.getId());
+		Aircompany aircompany = airCompanyDAO.findOneByIdAndIsActive(recObj.getId(),true);
 		if (aircompany == null) {
 			return "Fail, air company do not exist!";
 		}
 		
-		Aircompany aircompanyOther = airCompanyDAO.findOneByName(recObj.getName());
+		Aircompany aircompanyOther = airCompanyDAO.findOneByNameAndIsActive(recObj.getName(),true);
 		if (aircompanyOther != null) {
 			return "Fail, air company with provided name already exists but name must be unique!";
 			
@@ -82,7 +82,7 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 	
 	@Override
 	public String flagNotActive(String name) {
-		Aircompany aircompany = airCompanyDAO.findOneByName(name);
+		Aircompany aircompany = airCompanyDAO.findOneByNameAndIsActive(name,true);
 		if (name == null || name.equals("")) {
 			return "Fail, data missing!";
 		}

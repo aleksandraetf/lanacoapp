@@ -22,13 +22,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public ArrayList<User> getAll() {
-		return ((ArrayList<User>)userDAO.findAll()).stream().filter(airplane->airplane.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return ((ArrayList<User>)userDAO.findAllByIsActive(true));
 	}
 
 	@Override
 	public User getOne(String name) {
-		return userDAO.findOneByUsername(name);
+		return userDAO.findOneByUsernameAndIsActive(name,true);
 	}
 
 	@Override
@@ -38,7 +37,7 @@ public class UserServiceImpl implements UserService {
 						|| "".equals(recObj.getEmail()) ) {
 			return "Fail, data missing";
 		}
-		User user = userDAO.findOneByUsername(recObj.getUsername());
+		User user = userDAO.findOneByUsernameAndIsActive(recObj.getUsername(),true);
 		if (user != null) {
 			return "Fail, user with provided name already exists but name must be unique!";
 		}
@@ -63,7 +62,7 @@ public class UserServiceImpl implements UserService {
 				|| recObj.getPassword().equals("")) {
 			return "Fail, data missing!";
 		}
-		User user = userDAO.findOneByUsername(recObj.getUsername());
+		User user = userDAO.findOneByUsernameAndIsActive(recObj.getUsername(),true);
 		if (user == null) {
 			return "Fail, user with provided name not found!";
 		}
@@ -84,7 +83,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public String flagNotActive(String username) {
-		User user = userDAO.findOneByUsername(username);
+		User user = userDAO.findOneByUsernameAndIsActive(username,true);
 		if (username == null || username.equals("")) {
 			return "Fail, data missing!";
 		}
@@ -107,12 +106,12 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User findOneByUsernameAndPassword(String username, String password) {
-		return userDAO.findOneByUsernameAndPassword(username, password);
+		return userDAO.findOneByUsernameAndPasswordAndIsActive(username, password,true);
 	}
 
 	@Override
 	public User findOneByUsername(String username) {
-		return userDAO.findOneByUsername(username);
+		return userDAO.findOneByUsernameAndIsActive(username,true);
 	}
 
 }
