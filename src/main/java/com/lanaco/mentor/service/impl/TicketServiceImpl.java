@@ -42,13 +42,14 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public String save(Ticket recObj) {
+		System.out.println(recObj.getFlight().getId()+","+recObj.getNumberOfTickets()+","+recObj.getUser().getEmail());
 		if (recObj.getFlight().getId()==null||recObj.getNumberOfTickets()==null || recObj.getNumberOfTickets()<=0
-				|| recObj.getUser()==null || "".equals(recObj.getUser().getUsername())) {
+				|| recObj.getUser()==null) {
 			return "Fail, data missing";
 		}
-
-		Flight flight=flightDAO.findOneById(recObj.getFlight().getId());
-		User user=userDAO.findOneByUsername(recObj.getUser().getUsername());
+		
+		Flight flight=flightDAO.findOneByIdAndIsActive(recObj.getFlight().getId(),true);
+		User user=userDAO.findOneByEmailAndIsActive(recObj.getUser().getEmail(),true);
 		
 		if(flight == null)
 			return "Fail, Ne postoji let sa referenciranim id-em("+recObj.getFlight().getId()+"), karta nije sacuvana!";
@@ -61,9 +62,10 @@ public class TicketServiceImpl implements TicketService {
 				+"Slobodan broj sjedista je : "+(flight.getAirplane().getSeats()-flight.getSeatsReserved());
 		
 		Ticket ticket = new Ticket(flight,user,recObj.getNumberOfTickets());
-		
+		flight.setSeatsReserved(flight.getSeatsReserved()+ticket.getNumberOfTickets());
 		try {
 			ticketDAO.save(ticket);
+			flightDAO.save(flight);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
 			return "Exception in Ticket Controller POST (ex1), contact admins!";

@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.service.AirCompanyService;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @RestController
 @RequestMapping(path = "/api/aircompany")
 public class AirCompanyController {
@@ -64,6 +67,7 @@ public class AirCompanyController {
 	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  Aircompany aircompany, HttpServletRequest request){
 		System.out.println(aircompany.getName());
+		//log.info("Poruka");
 		String response=airCompanyService.flagNotActive(aircompany.getName());
 		if (response.contains("Fail")) {
 			System.out.println(response);

@@ -9,9 +9,9 @@ import com.lanaco.mentor.model.Destination;
 
 public interface DestinationDAO extends CrudRepository<Destination, Long> {
 
-	public Destination findOneByName(String name);
-	public Destination findOneById(Long id);
+	public Destination findOneByNameAndIsActive(String name,boolean isActive);
+	public Destination findOneByIdAndIsActive(Long id,boolean isActive);
 	
-	public ArrayList<Destination> findAll();
+	public ArrayList<Destination> findAllByIsActive(boolean isActive);
 
 }

@@ -1,11 +1,19 @@
 import './App.css';
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Destination from './Destination';
+import SupervisorDestination from './supervisor/Destination';
 import Login from './Login';
-import Airplane from './Airplane';
-import Aircompany from './Aircompany';
-import Flight from './Flight';
+import SupervisorAirplane from './supervisor/Airplane';
+import SupervisorAircompany from './supervisor/Aircompany';
+import SupervisorFlight from './supervisor/Flight';
+import Supervisor from './supervisor/Supervisor';
+import History from './user/History'
+
+
+import User from './user/User';
+
+
+
 
 class App extends Component {
   render() {
@@ -22,38 +30,65 @@ class App extends Component {
             }}
           />
           <Route
-            path="/aircompany"
+            path="/supervisor/aircompany"
             exact={true}
             render={props => {
               return (
-                <Aircompany {...props} />
+                <SupervisorAircompany {...props} />
               );
             }}
           />
           <Route
-            path="/destination"
+            path="/supervisor/destination"
             exact={true}
             render={props => {
               return (
-                <Destination {...props} />
+                <SupervisorDestination {...props} />
               );
             }}
           />
 		  <Route
-            path="/airplane"
+            path="/supervisor/airplane"
             exact={true}
             render={props => {
               return (
-                <Airplane {...props} />
+                <SupervisorAirplane {...props} />
               );
             }}
           />
 		  <Route
-            path="/flight"
+            path="/supervisor/flight"
             exact={true}
             render={props => {
               return (
-                <Flight {...props} />
+                <SupervisorFlight {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/supervisor"
+            exact={true}
+            render={props => {
+              return (
+                <Supervisor {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/user"
+            exact={true}
+            render={props => {
+              return (
+                <User {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/user/history"
+            exact={true}
+            render={props => {
+              return (
+                <History {...props} />
               );
             }}
           />

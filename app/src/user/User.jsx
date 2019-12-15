@@ -3,34 +3,29 @@ import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { checkIfLogged } from './common.js';
+import { checkIfLogged } from '../common.js';
+import App from '../App'
 
 class AirplanePage extends Component {
 
     constructor(props) {
         super(props);
-
         checkIfLogged().then(resp => {
             if (!resp) {
                 this.props.history.push('/')
             }
         });
-      //  this.logOut = this.logOut.bind(this);
+		this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleDelete=this.handleDelete.bind(this);
-		
-
-        this.state = { flights : [],aircompanies: [] ,airplanes: [] ,destinations: [], showModal: false, message: "", 
-					date: "" , reserved: 0 ,price: 0,
-					selectedAircompanyId: 0, selectedAirplaneId: 0, selectedDestinationId:0};
-		
-		this.loadDataAircompanies();
-		this.loadDataDestinations();
-		this.loadDataAirplanes();
-
-
+		this.handleBuy=this.handleBuy.bind(this);
+		this.handleHistory=this.handleHistory.bind(this);
+        this.state = {flights : [], showModal: false, message: "",numberOfTickets: 0};
     }
+	
+	handleHistory(){
+		window.location='/user/history';
+	}
 	
 	loadDataAircompanies() {
         fetch('/api/aircompany/')
@@ -69,8 +64,8 @@ class AirplanePage extends Component {
         });
     };
 
-  /*  logOut() {
-        fetch('/auth/logout',
+	logOut() {
+        fetch('/logout/',
             {
                 method: 'GET',
                 mode: 'cors',
@@ -79,18 +74,25 @@ class AirplanePage extends Component {
                     credentials: 'include'
                 },
             }
-        ).catch(() => this.props.history.push('/'));
+        ).then(() => window.location="/login");
     }
-*/
 
-	handleDelete(event){
+	handleBuy(event){
 		console.log(event.target.value);
+		console.log(this.state.numberOfTickets);
 		let dataToSend = {
-            id: event.target.value
+            flight:{
+				id: event.target.value
+			},
+			user:{
+				email: this.state.email
+			},
+			numberOfTickets: this.state.numberOfTickets
         }
-        fetch('/api/flight/',
+		console.log(dataToSend);
+        fetch('/api/ticket/',
             {
-                method: 'DELETE',
+                method: 'POST',
                 headers:
                 {
 
@@ -141,9 +143,6 @@ class AirplanePage extends Component {
     render() {
         console.log(this.state);
         let flights = [...this.state.flights];
-		let aircompanies=[...this.state.aircompanies];
-		let airplanes=[...this.state.airplanes];
-		let destinations=[...this.state.destinations];
         return (
            
             <div style={{ backgroundColor: '#j40a1j', backgroundImage: `linear-gradient(150deg, #000000 30%, #aa2ke9 70%)`, margin: 0, height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center', }}>
@@ -183,31 +182,6 @@ class AirplanePage extends Component {
 									type="number" name="price" id="price" value={this.state.price} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
-								<select ref="aircompanyRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Aviokompaniju </option>
-									{	
-										aircompanies.map((a)=> <option key={"a.id"} value={a.name}>
-											{a.name}</option>)
-									}
-								</select>
-								<select ref="airplaneRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Avion </option>
-									{	
-										airplanes.map(
-											(a)=> <option key={"a.id"} value={a.brand}>
-											{a.brand}</option>)
-									}
-								</select>
-								<select ref="destinationRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Destinaciju </option>
-									{	
-										destinations.map((a)=> <option key={"a.id"} value={a.name}>
-											{a.name}</option>)
-									}
-								</select>
 								
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
@@ -221,17 +195,22 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Flight Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Buy tickets</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Flight</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleHistory}>History</Button>
+					<InputGroup size="sm">
+                                    <InputGroupAddon sm={3} addonType="prepend">
+                                        Number of tickets :
+                                    </InputGroupAddon>
+                                    <Input
+                                        type="number" name="numberOfTickets" id="numberOfTickets" value={this.state.numberOfTickets} onChange={this.handleInputChange}
+                                    ></Input>
+                    </InputGroup>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
@@ -243,7 +222,7 @@ class AirplanePage extends Component {
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
 									<td>{flight.flightDate}</td>
 									<td>
-										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleBuy}>Buy</Button>
 									</td>
 									</tr>
                                 })

@@ -36,8 +36,7 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public ArrayList<Flight> getAll() {
-		return (ArrayList<Flight>)flightDAO.findAll().stream().filter(flight ->flight.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Flight>)flightDAO.findAllByIsActive(true);
 	}
 
 	
@@ -62,18 +61,18 @@ public class FlightServiceImpl implements FlightService {
 			return "Fail, data missing";
 		}
 		
-		if(airCompanyDAO.findOneById(recObj.getAirCompany().getId())==null)
+		if(airCompanyDAO.findOneByIdAndIsActive(recObj.getAirCompany().getId(),true)==null)
 			return "Fail, ne postoji referencirana Aviokompanija("+recObj.getAirCompany().getName()+"), let nije sacuvan!";
 		
-		if(destinationDAO.findOneById(recObj.getDestination().getId())==null)
+		if(destinationDAO.findOneByIdAndIsActive(recObj.getDestination().getId(),true)==null)
 			return "Fail, ne postoji referencirana Destinacija("+recObj.getDestination().getName()+"), let nije sacuvan!";
 		
-		if(airplaneDAO.findOneById(recObj.getAirplane().getId())==null)
+		if(airplaneDAO.findOneByIdAndIsActive(recObj.getAirplane().getId(),true)==null)
 			return "Fail, ne postoji referencirani Brend Aviona("+recObj.getAirplane().getBrand()+"), let nije sacuvan!";
 		
-		Airplane airplane=airplaneDAO.findOneById(recObj.getAirplane().getId());
-		Aircompany airCompany=airCompanyDAO.findOneById(recObj.getAirCompany().getId());
-		Destination destination=destinationDAO.findOneById(recObj.getDestination().getId());
+		Airplane airplane=airplaneDAO.findOneByIdAndIsActive(recObj.getAirplane().getId(),true);
+		Aircompany airCompany=airCompanyDAO.findOneByIdAndIsActive(recObj.getAirCompany().getId(),true);
+		Destination destination=destinationDAO.findOneByIdAndIsActive(recObj.getDestination().getId(),true);
 		
 		
 		try {
@@ -99,7 +98,7 @@ public class FlightServiceImpl implements FlightService {
 			return "Fail, data missing";
 		}
 		
-		Flight flight = flightDAO.findOneById(recObj.getId());
+		Flight flight = flightDAO.findOneByIdAndIsActive(recObj.getId(),true);
 		if(flight == null) {
 			return "Fail, flight not found";
 		}
@@ -126,25 +125,25 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public ArrayList<Flight> findAllByFlightDate(Date flightDate) {
-		return (ArrayList<Flight>)flightDAO.findAllByFlightDate(flightDate);
+		return (ArrayList<Flight>)flightDAO.findAllByFlightDateAndIsActive(flightDate,true);
 	}
 
 	@Override
 	public ArrayList<Flight> findAllByFlightDateAndDestination(Date flightDate, Destination destination) {
-		return (ArrayList<Flight>)flightDAO.findAllByFlightDateAndDestination(flightDate, destination);
+		return (ArrayList<Flight>)flightDAO.findAllByFlightDateAndDestinationAndIsActive(flightDate, destination,true);
 
 	}
 
 	@Override
 	public ArrayList<Flight> findAllByFlightDateBetweenAndDestination(Date flightDate1, Date flightDate2,
 			Destination destination) {
-		return (ArrayList<Flight>)flightDAO.findAllByFlightDateBetweenAndDestination(flightDate1, flightDate2, destination);
+		return (ArrayList<Flight>)flightDAO.findAllByFlightDateBetweenAndDestinationAndIsActive(flightDate1, flightDate2, destination,true);
 
 	}
 
 	@Override
 	public ArrayList<Flight> findAllByAirCompanyAndFlightDate(Aircompany aircompany, Date flightDate) {
-	return (ArrayList<Flight>)flightDAO.findAllByAirCompanyAndFlightDate(aircompany, flightDate);
+	return (ArrayList<Flight>)flightDAO.findAllByAirCompanyAndFlightDateAndIsActive(aircompany, flightDate,true);
 	}
 
 
@@ -154,7 +153,7 @@ public class FlightServiceImpl implements FlightService {
 		//sve karte ciji je let izbrisan vise ne prikazuju
 		//ili da se prikazuju a da se naznaci da je let otkazan/obrisan ili kako vec
 		
-		Flight flight = flightDAO.findOneById(recObjId);
+		Flight flight = flightDAO.findOneByIdAndIsActive(recObjId,true);
 		if (recObjId == null) {
 			return "Fail, data missing!";
 		}

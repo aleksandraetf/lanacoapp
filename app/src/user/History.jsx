@@ -3,34 +3,57 @@ import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { checkIfLogged } from './common.js';
+import { checkIfLogged } from '../common.js';
+import App from '../App'
+import User from './User'
 
 class AirplanePage extends Component {
 
     constructor(props) {
         super(props);
-
         checkIfLogged().then(resp => {
             if (!resp) {
                 this.props.history.push('/')
             }
         });
-      //  this.logOut = this.logOut.bind(this);
+		this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-		this.handleDelete=this.handleDelete.bind(this);
+		this.handleHistory=this.handleHistory.bind(this);
+		this.fetchTickets=this.fetchTickets.bind(this);
 		
-
-        this.state = { flights : [],aircompanies: [] ,airplanes: [] ,destinations: [], showModal: false, message: "", 
-					date: "" , reserved: 0 ,price: 0,
-					selectedAircompanyId: 0, selectedAirplaneId: 0, selectedDestinationId:0};
 		
-		this.loadDataAircompanies();
-		this.loadDataDestinations();
-		this.loadDataAirplanes();
-
-
+        this.state = {tickets : [], showModal: false, message: "",numberOfTickets: 0};
+		this.fetchTickets();
     }
+	
+	fetchTickets(){
+		let dataToSend='test@gmail.com';
+		console.log(dataToSend);
+        fetch('/api/ticket/user/',
+            {
+                method: 'POST',
+                headers:
+                {
+
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    credentials: 'include'
+                },
+                mode:'cors',
+                credentials:'include',
+                body: dataToSend,
+            }
+        )
+            .then(response => response.json())
+            .then(data => this.setState({ tickets: data }));
+		console.log('Tickeeeeeeeeeets:')
+		console.log(this.state.tickets);
+	}
+	
+	handleHistory(){
+		window.location='/user/history';
+	}
 	
 	loadDataAircompanies() {
         fetch('/api/aircompany/')
@@ -50,9 +73,7 @@ class AirplanePage extends Component {
     }
 
     loadData() {
-        fetch('/api/flight/')
-            .then(response => response.json())
-            .then(data => this.setState({ flights: data }));
+		
     }
 
     componentWillMount() {
@@ -69,8 +90,8 @@ class AirplanePage extends Component {
         });
     };
 
-  /*  logOut() {
-        fetch('/auth/logout',
+	logOut() {
+        fetch('/logout/',
             {
                 method: 'GET',
                 mode: 'cors',
@@ -79,31 +100,8 @@ class AirplanePage extends Component {
                     credentials: 'include'
                 },
             }
-        ).catch(() => this.props.history.push('/'));
+        ).then(() => window.location="/login");
     }
-*/
-
-	handleDelete(event){
-		console.log(event.target.value);
-		let dataToSend = {
-            id: event.target.value
-        }
-        fetch('/api/flight/',
-            {
-                method: 'DELETE',
-                headers:
-                {
-
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    credentials: 'include'
-                },
-                mode:'cors',
-                credentials:'include',
-                body: JSON.stringify(dataToSend),
-            }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
-	}
 
     handleInputChange(event) {
         this.setState({ [event.target.name]: event.target.value});
@@ -140,10 +138,7 @@ class AirplanePage extends Component {
 
     render() {
         console.log(this.state);
-        let flights = [...this.state.flights];
-		let aircompanies=[...this.state.aircompanies];
-		let airplanes=[...this.state.airplanes];
-		let destinations=[...this.state.destinations];
+        let tickets = [...this.state.tickets];
         return (
            
             <div style={{ backgroundColor: '#j40a1j', backgroundImage: `linear-gradient(150deg, #000000 30%, #aa2ke9 70%)`, margin: 0, height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center', }}>
@@ -183,31 +178,6 @@ class AirplanePage extends Component {
 									type="number" name="price" id="price" value={this.state.price} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
-								<select ref="aircompanyRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Aviokompaniju </option>
-									{	
-										aircompanies.map((a)=> <option key={"a.id"} value={a.name}>
-											{a.name}</option>)
-									}
-								</select>
-								<select ref="airplaneRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Avion </option>
-									{	
-										airplanes.map(
-											(a)=> <option key={"a.id"} value={a.brand}>
-											{a.brand}</option>)
-									}
-								</select>
-								<select ref="destinationRef" name="custom-search-select"
-									className="custom-search-select">
-									<option value="" selected disabled hidden> Izaberite Destinaciju </option>
-									{	
-										destinations.map((a)=> <option key={"a.id"} value={a.name}>
-											{a.name}</option>)
-									}
-								</select>
 								
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
@@ -221,30 +191,32 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Flight Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Buy tickets</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Flight</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/airplane" }>Airplanes</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
+					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleHistory}>History</Button>
+					<InputGroup size="sm">
+                                    <InputGroupAddon sm={3} addonType="prepend">
+                                        Number of tickets :
+                                    </InputGroupAddon>
+                                    <Input
+                                        type="number" name="numberOfTickets" id="numberOfTickets" value={this.state.numberOfTickets} onChange={this.handleInputChange}
+                                    ></Input>
+                    </InputGroup>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
                         </thead>
                         <tbody>
                             {
-                                flights.map((flight) => {
-                                    return <tr key={flight.id}><td>{flight.id}</td><td>{flight.price}</td><td>{flight.seatsReserver}</td>
-									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
-									<td>{flight.flightDate}</td>
-									<td>
-										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
-									</td>
+                                tickets.map((ticket) => {
+                                    return <tr key={ticket.id}><td>{ticket.id}</td><td>{ticket.flight.price}</td><td>{ticket.numberOfTickets}</td>
+									<td>{ticket.flight.destination.name}</td><td>{ticket.flight.airplane.brand}</td><td>{ticket.flight.airCompany.name}</td>
+									<td>{ticket.flight.flightDate}</td>
 									</tr>
                                 })
                             }

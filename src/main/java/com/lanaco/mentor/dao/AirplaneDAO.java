@@ -8,17 +8,17 @@ import com.lanaco.mentor.model.Airplane;
 
 public interface AirplaneDAO extends CrudRepository<Airplane,Long>{
 	
-	public ArrayList<Airplane> findAll();
+	public ArrayList<Airplane> findAllByIsActive(boolean isActive);
 	
-	public ArrayList<Airplane> findAllBySeatsGreaterThanEqual(int seats);
+	public ArrayList<Airplane> findAllBySeatsGreaterThanEqualAndIsActive(int seats,boolean isActive);
 	
-	public ArrayList<Airplane> findAllByBrand(String brand);
+	public ArrayList<Airplane> findAllByBrandAndIsActive(String brand,boolean isActive);
 	
 
-	public Airplane findOneByBrandAndSeats(String brand,int seats);
+	public Airplane findOneByBrandAndSeatsAndIsActive(String brand,int seats,boolean isActive);
 	
-	public Airplane findOneByBrand(String brand);
+	public Airplane findOneByBrandAndIsActive(String brand,boolean isActive);
 	
-	public Airplane findOneById(Long Id);
+	public Airplane findOneByIdAndIsActive(Long Id,boolean isActive);
 	
 }

@@ -19,19 +19,18 @@ public class AirplaneServiceImpl implements AirplaneService{
 
 	@Override
 	public ArrayList<Airplane> getAll() {
-		return (ArrayList<Airplane>)airplaneDAO.findAll().stream().filter(airplane->airplane.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Airplane>)airplaneDAO.findAllByIsActive(true);
 	}
 	
 	@Override
 	public ArrayList<Airplane> findAllBySeatsGreaterThanEqual(int seats) {
-		return (ArrayList<Airplane>)airplaneDAO.findAllBySeatsGreaterThanEqual(seats);
+		return (ArrayList<Airplane>)airplaneDAO.findAllBySeatsGreaterThanEqualAndIsActive(seats,true);
 	}
 
 
 	@Override
 	public ArrayList<Airplane> findAllByBrand(String brand) {
-		return (ArrayList<Airplane>)airplaneDAO.findAllByBrand(brand);
+		return (ArrayList<Airplane>)airplaneDAO.findAllByBrandAndIsActive(brand,true);
 	}
 
 
@@ -48,7 +47,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 				) {
 			return "Fail, data missing";
 		}
-		Airplane plane = airplaneDAO.findOneByBrandAndSeats(recObj.getBrand(),recObj.getSeats());
+		Airplane plane = airplaneDAO.findOneByBrandAndSeatsAndIsActive(recObj.getBrand(),recObj.getSeats(),true);
 		if (plane != null) {
 			return "Fail, plane with provided brand and seats already exists but brand and seats must be unique!";
 		}
@@ -73,7 +72,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 		if (recObj.getBrand() == null || recObj.getBrand().equals("")) {
 			return "Fail, data missing!";
 		}
-		Airplane plane = airplaneDAO.findOneById(recObj.getId());
+		Airplane plane = airplaneDAO.findOneByIdAndIsActive(recObj.getId(),true);
 		if (plane == null) {
 			return "Fail, airplane not found!";
 		}
@@ -98,7 +97,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 			return "Fail, data missing!";
 		}
 
-		Airplane airplane = airplaneDAO.findOneByBrand(brand);
+		Airplane airplane = airplaneDAO.findOneByBrandAndIsActive(brand,true);
 		if (airplane == null) {
 			return "Fail, airplane with provided brand not found!";
 		}
@@ -119,7 +118,7 @@ public class AirplaneServiceImpl implements AirplaneService{
 	//potrebno za save
 	@Override
 	public Airplane findOneByBrandAndSeats(String brand, int seats) {
-		return airplaneDAO.findOneByBrandAndSeats(brand, seats);
+		return airplaneDAO.findOneByBrandAndSeatsAndIsActive(brand, seats,true);
 	}
 
 

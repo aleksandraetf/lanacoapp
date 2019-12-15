@@ -1,7 +1,9 @@
 package com.lanaco.mentor.controllers;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lanaco.mentor.dao.RoleDAO;
 import com.lanaco.mentor.dao.UserDAO;
+import com.lanaco.mentor.dto.LoginDTO;
 import com.lanaco.mentor.model.Role;
 import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.UserService;
@@ -39,19 +42,28 @@ public class LoginController {
 
 	@Autowired
 	RoleDAO roleDAO;
+	
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	
 	@RequestMapping(value="/login/",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<String> userLogIn(@RequestBody User reqUser, HttpServletRequest request) {
-		System.out.println("Uslo vuj"+reqUser.getEmail()+reqUser.getPassword());
+	public ResponseEntity<String> userLogIn(@RequestBody LoginDTO reqUser, HttpServletRequest request) {
+		System.out.println("Stize post na login !!! :"+reqUser.getEmail()+reqUser.getPassword()+reqUser.getRequestedRole());
 		if (reqUser == null || reqUser.getEmail() == null || reqUser.getEmail().trim().equals("")
-				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("")) {
+				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("")
+				|| reqUser.getRequestedRole()==null) {
 			return new ResponseEntity<String>("Fail, Login Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		try {
 			request.login(reqUser.getEmail(), reqUser.getPassword());
+			User user=userDAO.findOneByEmailAndIsActive(reqUser.getEmail(), true);
+			System.out.println("Role:"+reqUser.getRequestedRole());
+			for(Role role : user.getRoles())
+				if(role.getRole().equals(reqUser.getRequestedRole()))
+					return new ResponseEntity<String>("OK", HttpStatus.OK);
+				
 		}
 		catch(javax.servlet.ServletException ex) {
 			ex.printStackTrace();
@@ -61,7 +73,8 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Already logged!", HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
+		
+		return new ResponseEntity<String>("Not valid role.", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(value = "/isAuthenticated/")
@@ -93,16 +106,23 @@ public class LoginController {
 
 	@PostMapping(value = "/register/")
 	public ResponseEntity<String> userRegister(@RequestBody User reqUser, HttpServletRequest request) {
-		if (reqUser == null || reqUser.getEmail() == null || reqUser.getPassword() == null
-				|| reqUser.getUsername() == null) {
+		if (reqUser == null || reqUser.getEmail() == null || reqUser.getPassword() == null) {
 			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
 		}
-		//provjeriti dal vec postoji
-		User user = new User();
+		
+		System.out.println("Register : "+reqUser.getEmail()+","+reqUser.getPassword());
+		User user = userDAO.findOneByEmailAndIsActive(reqUser.getEmail(),true);
+		
+		if(user!=null)
+			return new ResponseEntity<String>("Fail, Email already in use!",HttpStatus.BAD_REQUEST);
+		
+		user=new User();
+		user.setUsername("NeTrebaNamVise");
 		user.setPassword(bCryptPasswordEncoder.encode(reqUser.getPassword()));
-		user.setUsername(reqUser.getUsername());
 		user.setEmail(reqUser.getEmail());
 		user.setIsActive(true);
+		
+		
 		Role userRole = roleDAO.findByRole("USER");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 		try {
@@ -111,8 +131,7 @@ public class LoginController {
 			return new ResponseEntity<String>("User could not be saved!", HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<String>("OK", HttpStatus.OK);
-
+		return new ResponseEntity<String>("OK", HttpStatus.ACCEPTED);
 	}
 
 }

@@ -19,13 +19,12 @@ public class DestinationServiceImpl implements DestinationService{
 
 	@Override
 	public ArrayList<Destination> getAll() {
-		return (ArrayList<Destination>) destinationDAO.findAll().stream().filter(destination ->destination.getIsActive())
-				.collect(Collectors.toCollection(ArrayList::new));
+		return (ArrayList<Destination>) destinationDAO.findAllByIsActive(true);
 	}
 
 	@Override
 	public Destination getOne(String name) {
-		return destinationDAO.findOneByName(name);
+		return destinationDAO.findOneByNameAndIsActive(name,true);
 	}
 
 	@Override
@@ -33,7 +32,7 @@ public class DestinationServiceImpl implements DestinationService{
 		if (recObj.getName() == null || recObj.getName().equals("")){
 			return "Fail, data missing";
 		}
-		Destination destination = destinationDAO.findOneByName(recObj.getName());
+		Destination destination = destinationDAO.findOneByNameAndIsActive(recObj.getName(),true);
 		if (destination != null) {
 			return "Fail, destination with provided name already exists but name must be unique!";
 		}
@@ -57,13 +56,13 @@ public class DestinationServiceImpl implements DestinationService{
 		if (recObj.getName() == null || "".equals(recObj.getName())) {
 			return "Fail, data missing!";
 		}
-		Destination destination = destinationDAO.findOneById(recObj.getId());
+		Destination destination = destinationDAO.findOneByIdAndIsActive(recObj.getId(),true);
 			if (destination == null) {
 			return "Fail, destination with provided id not found!";
 		}
 			
 		//provjeravam da li postoji neka druga destinacija sa tim nazivom
-		Destination destinationOther = destinationDAO.findOneByName(recObj.getName());
+		Destination destinationOther = destinationDAO.findOneByNameAndIsActive(recObj.getName(),true);
 		if (destinationOther != null) {
 			return "Fail, destination with provided name already exists but name must be unique!";
 		}
@@ -84,7 +83,7 @@ public class DestinationServiceImpl implements DestinationService{
 	}
 	@Override
 	public String flagNotActive(String name) {
-		Destination destination = destinationDAO.findOneByName(name);
+		Destination destination = destinationDAO.findOneByNameAndIsActive(name,true);
 		if (name == null || name.equals("")) {
 			return "Fail, data missing!";
 		}

@@ -13,16 +13,20 @@ import com.lanaco.mentor.model.Flight;
 public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 
-	public ArrayList<Flight> findAll();
+	public ArrayList<Flight> findAllByIsActive(boolean isActive);
 
-	public ArrayList<Flight> findAllByFlightDate(Date flightDate);
+	public ArrayList<Flight> findAllByFlightDateAndIsActive(Date flightDate,boolean isActive);
 	
-	public ArrayList<Flight> findAllByFlightDateAndDestination(Date flightDate,Destination destination);
+	public ArrayList<Flight> 
+		findAllByFlightDateAndDestinationAndIsActive(Date flightDate,Destination destination,
+														boolean isActive);
 	
-	public ArrayList<Flight> findAllByFlightDateBetweenAndDestination(Date flightDate1, Date flightDate2,Destination destination);
+	public ArrayList<Flight> findAllByFlightDateBetweenAndDestinationAndIsActive(Date flightDate1,
+				Date flightDate2,Destination destination,boolean isActive);
 	
-	public ArrayList<Flight> findAllByAirCompanyAndFlightDate(Aircompany aircompany,Date flightDate);
+	public ArrayList<Flight> findAllByAirCompanyAndFlightDateAndIsActive(Aircompany aircompany,
+			Date flightDate,boolean isActive);
 	
-	public Flight findOneById(Long id);
+	public Flight findOneByIdAndIsActive(Long id,boolean isActive);
 	
 }

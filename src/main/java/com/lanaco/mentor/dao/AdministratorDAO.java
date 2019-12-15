@@ -11,12 +11,13 @@ import com.lanaco.mentor.model.Aircompany;
 
 public interface AdministratorDAO extends CrudRepository<Administrator,Long>{
 	
-	public Administrator findOneByUsernameAndPassword(String username, String password);
-	public Administrator findOneByUsername(String username);
+	public Administrator 
+		findOneByUsernameAndPasswordAndIsActive(String username, String password,boolean isActive);
+	public Administrator findOneByUsernameAndIsActive(String username,boolean isActive);
 
-	public ArrayList<Administrator> findAllByAirCompany(Aircompany airCompany);
+	public ArrayList<Administrator> findAllByAirCompanyAndIsActive(Aircompany airCompany,boolean isActive);
 	
-	public ArrayList<Administrator> findAll();
+	public ArrayList<Administrator> findAllByIsActive(boolean isActive);
 	
 	
 }
