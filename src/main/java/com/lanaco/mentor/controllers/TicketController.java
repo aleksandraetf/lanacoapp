@@ -42,16 +42,16 @@ public class TicketController {
 		return new ResponseEntity<ArrayList<Ticket>>(ticketService.getAll(), HttpStatus.OK);
 	}
 	
-	@PostMapping(path="/user/",produces="application/json")
-	public ResponseEntity<ArrayList<Ticket>> getAllByUser(@RequestBody String email){
-		System.out.println("By username :"+email+" username");
-		User user = userDAO.findOneByEmailAndIsActive(email,true);
+	@GetMapping(path="/user/",produces="application/json")
+	public ResponseEntity<ArrayList<Ticket>> getAllByUser(HttpServletRequest request){
+		System.out.println("By username :"+request.getSession().getAttribute("email")+" username");
+		User user = userDAO.findOneByEmailAndIsActive((String)request.getSession().getAttribute("email"),true);
 		
 		if(user == null) //ako ne postoji korisnik u bazi vraca se BAD_REQUEST
 			return new ResponseEntity<ArrayList<Ticket>>(new ArrayList<Ticket>(), HttpStatus.BAD_REQUEST);
 
 		System.out.println(user.getEmail()+"kreeeeeeeeeeeeeee");
-		ArrayList<Ticket> tickets=ticketDAO.findAllByUser_Email(email);
+		ArrayList<Ticket> tickets=ticketDAO.findAllByUser_Email((String)request.getSession().getAttribute("email"));
 		for(Ticket t : tickets)
 			System.out.println(t.getId());
 		return new ResponseEntity<ArrayList<Ticket>>(tickets, HttpStatus.ACCEPTED);
@@ -60,6 +60,7 @@ public class TicketController {
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Ticket recObjTicket, HttpServletRequest request){
 		System.out.println("Uslo je u ticket");
+		recObjTicket.setUser(new User((String)request.getSession().getAttribute("email")));
 		String response=ticketService.save(recObjTicket);
 		System.out.println("YYY");
 		if (response.contains("Fail")) {

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lanaco.mentor.dao.FlightDAO;
 import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.model.Flight;
 import com.lanaco.mentor.service.DestinationService;
@@ -29,16 +30,34 @@ public class FlightController {
 	@Autowired
 	private FlightService flightService;
 	
+	@Autowired
+	private FlightDAO flightDAO;
+	
 	
 	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Flight>> getAll(){
 		return new ResponseEntity<ArrayList<Flight>>(flightService.getAll(), HttpStatus.OK);
 	}
 	
+	@GetMapping(path="/admin/",produces="application/json")
+	public ResponseEntity<ArrayList<Flight>> getAllByAdministrator(HttpServletRequest request){
+		System.out.println("Uslo u flight by admin");
+		ArrayList<Flight> response=flightService.findAllByAdministratorEmail((String)request.getSession().getAttribute("email"));
+		if (response==null) {
+			return new ResponseEntity<ArrayList<Flight>>(HttpStatus.BAD_REQUEST);
+		}
+		for(Flight flight : response)
+			System.out.println(flight.getId());
+		
+		return new ResponseEntity<ArrayList<Flight>>(response,HttpStatus.ACCEPTED);
+	}
 	
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Flight recObjFlight, HttpServletRequest request){
 		System.out.println("Uslo u flight");
+		System.out.println(recObjFlight.getAirCompany()+" "
+				+recObjFlight.getAirplane()+" "
+				+recObjFlight.getSeatsReserved());
 		String response=flightService.save(recObjFlight);
 		System.out.println("Response:"+response);
 		if (response.contains("Fail")) {
@@ -49,6 +68,8 @@ public class FlightController {
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}
+	
+	
 	
 	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Flight recObjFlight, HttpServletRequest request){

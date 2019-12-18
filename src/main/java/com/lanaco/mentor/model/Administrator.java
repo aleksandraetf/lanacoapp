@@ -1,11 +1,16 @@
 package com.lanaco.mentor.model;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -30,6 +35,19 @@ public class Administrator {
 	@Column(nullable = false)
 	private String password;
 	
+	
+	@JsonProperty("email")
+	@Column(nullable = false)
+	private String email;
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@JsonProperty("isActive")
 	@Column(nullable = false)
 	private Boolean isActive;
@@ -38,6 +56,18 @@ public class Administrator {
 	@JoinColumn(referencedColumnName="id", nullable=false)
 	private Aircompany airCompany;
 	
+	@ManyToOne
+	@JoinColumn(name = "role", referencedColumnName = "id", nullable = false)
+	private Role role;
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public Administrator() {
 		
 	}

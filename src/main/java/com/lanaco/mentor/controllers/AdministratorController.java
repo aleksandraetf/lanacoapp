@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lanaco.mentor.dto.LoginDTO;
 import com.lanaco.mentor.model.Administrator;
+import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.service.AdministratorService;
 
 @RestController
@@ -29,6 +31,13 @@ public class AdministratorController {
 	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Administrator>> getAll(){
 		return new ResponseEntity<ArrayList<Administrator>>(administratorService.getAll(), HttpStatus.OK);
+	}
+	@GetMapping(path="/aircompany/",produces="application/json")
+	public ResponseEntity<Aircompany> getAircompany(HttpServletRequest request){
+		System.out.println("Provjeravam kompaniju za administratora:"+request.getSession().getAttribute("email"));
+		Aircompany aircompany=(administratorService.findAircompanyByAdministrator((String)request.getSession().getAttribute("email")));
+		System.out.println("Njegova kompanije je : "+aircompany.getId()+":"+aircompany.getName());
+		return new ResponseEntity<Aircompany>(aircompany,HttpStatus.OK);
 	}
 	
 	
