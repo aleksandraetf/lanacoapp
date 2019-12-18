@@ -15,4 +15,5 @@ public interface SupervisorDAO extends CrudRepository<Supervisor, Long> {
 	
 	public ArrayList<Supervisor> findAll();
 
+	public Supervisor findOneByEmail(String email);
 }

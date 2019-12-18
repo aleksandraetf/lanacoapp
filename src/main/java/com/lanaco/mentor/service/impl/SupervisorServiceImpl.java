@@ -37,7 +37,7 @@ public class SupervisorServiceImpl implements SupervisorService {
 			return "Fail, supervisor with provided name already exists but name must be unique!";
 		}
 
-		supervisor = new Supervisor(recObj.getUsername(), recObj.getPassword());
+		supervisor = new Supervisor(recObj.getUsername(), recObj.getPassword(),recObj.getEmail());
 
 		try {
 			supervisorDAO.save(supervisor);

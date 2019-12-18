@@ -12,6 +12,11 @@ import History from './user/History'
 
 import User from './user/User';
 
+import AdministratorDestination from './administrator/Destination';
+import AdministratorAirplane from './administrator/Airplane';
+import AdministratorFlight from './administrator/Flight';
+import Administrator from './administrator/Administrator'
+
 
 
 
@@ -89,6 +94,42 @@ class App extends Component {
             render={props => {
               return (
                 <History {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/administrator/destination"
+            exact={true}
+            render={props => {
+              return (
+                <AdministratorDestination {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/administrator/airplane"
+            exact={true}
+            render={props => {
+              return (
+                <AdministratorAirplane {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/administrator"
+            exact={true}
+            render={props => {
+              return (
+                <Administrator {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/administrator/flight"
+            exact={true}
+            render={props => {
+              return (
+                <AdministratorFlight {...props} />
               );
             }}
           />

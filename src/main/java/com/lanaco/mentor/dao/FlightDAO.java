@@ -29,4 +29,6 @@ public interface FlightDAO extends CrudRepository<Flight, Long> {
 	
 	public Flight findOneByIdAndIsActive(Long id,boolean isActive);
 	
+	public ArrayList<Flight> findAllByAirCompany_NameAndIsActive(String airCompanyName,boolean isActive);
+	
 }

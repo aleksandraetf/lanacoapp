@@ -26,15 +26,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
+	
+	@Value("${spring.queries.supervizors-query}")
+	private String supervizorsQuery;
 
-	@Value("${spring.queries.roles-query}")
-	private String rolesQuery;
+	@Value("${spring.queries.admins-query}")
+	private String adminsQuery;
+	
+	@Value("${spring.queries.roleUser-query}")
+	private String rolesuserQuery;
+	
+	@Value("${spring.queries.roleAdmin-query}")
+	private String rolesadminQuery;
+	
+	@Value("${spring.queries.roleSuper-query}")
+	private String rolessuperQuery;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
-				.dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
-	}
+
+		auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesuserQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+		auth.jdbcAuthentication().usersByUsernameQuery(adminsQuery).authoritiesByUsernameQuery(adminsQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+		auth.jdbcAuthentication().usersByUsernameQuery(supervizorsQuery).authoritiesByUsernameQuery(rolessuperQuery).dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
+}
 
 	//// @formatter:off
 

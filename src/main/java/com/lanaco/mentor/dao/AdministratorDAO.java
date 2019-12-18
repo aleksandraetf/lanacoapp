@@ -18,6 +18,7 @@ public interface AdministratorDAO extends CrudRepository<Administrator,Long>{
 	public ArrayList<Administrator> findAllByAirCompanyAndIsActive(Aircompany airCompany,boolean isActive);
 	
 	public ArrayList<Administrator> findAllByIsActive(boolean isActive);
-	
+
+	public Administrator findOneByEmailAndIsActive(String email,boolean isActive);
 	
 }

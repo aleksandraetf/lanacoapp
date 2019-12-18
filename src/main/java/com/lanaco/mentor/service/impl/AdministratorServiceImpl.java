@@ -27,6 +27,12 @@ public class AdministratorServiceImpl implements AdministratorService {
 	public ArrayList<Administrator> getAll() {
 		return (ArrayList<Administrator>)adminDAO.findAllByIsActive(true); 
 	}
+	
+	@Override
+	public Aircompany findAircompanyByAdministrator(String email) {
+		Administrator admin=adminDAO.findOneByEmailAndIsActive(email, true);
+		return admin.getAirCompany();
+	}
 
 	@Override
 	public Administrator getOne(String name) {

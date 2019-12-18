@@ -45,6 +45,9 @@ public class LoginDTO {
 		this.requestedRole = requestedRole;
 	}
 
+	public LoginDTO() {
+		
+	}
 
 	public LoginDTO(String email, String password, String requestedRole) {
 		super();

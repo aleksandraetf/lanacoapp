@@ -22,7 +22,7 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
 
-    this.state = {registerEmail:"",registerPassword:"", email: "", password: "", message: "" };
+    this.state = {role: "", registerEmail:"",registerPassword:"", email: "", password: "", message: "" };
   }
   
   register() {
@@ -44,20 +44,39 @@ class Login extends Component {
       }
     ).then(response => { 
 		if (response.status === 200) {
-			this.props.history.push('/aircompany') 
-		} else { 
+			if(this.refs.roleRef.value==="USER"){
+				this.props.history.push('/user');
+			}
+			else if(this.refs.roleRef.value==="ADMINISTRATOR"){
+				this.props.history.push('/administrator');
+			}
+			else if(this.refs.roleRef.value==="SUPERVISOR")
+				this.props.history.push('/supervisor');
+			}
+		else { 
 			this.setState({ message: "Invalid credentials"+response.status+response }) 
-		}});
+		}
+		});
   }
 
   handleSubmit() {
+	  this.state.role=this.refs.roleRef.value;
 	  let dataToSend = {
             email: this.state.email,
 			password: this.state.password,
-			role: this.refs.roleRef.value
+			role: this.state.role
         }
 		console.log(dataToSend);
-    fetch('/login/',
+		let url='';
+		if(this.refs.roleRef.value==="USER"){
+			url='/login/user/';
+		}
+		else if(this.refs.roleRef.value==="ADMINISTRATOR"){
+			url='/login/administrator/';
+		}
+		else if(this.refs.roleRef.value==="SUPERVISOR")
+			url='/login/supervisor/';
+    fetch(url,
       {
         method: 'POST',
         headers:
@@ -71,15 +90,16 @@ class Login extends Component {
       }
     ).then(response => { 
 	if (response.status === 200) { 
-		if(this.refs.roleRef.value==="USER")
+		if(this.refs.roleRef.value==="USER"){
 			this.props.history.push('/user');
+		}
 		else if(this.refs.roleRef.value==="ADMINISTRATOR"){
 			this.props.history.push('/administrator');
 		}
 		else if(this.refs.roleRef.value==="SUPERVISOR")
 			this.props.history.push('/supervisor');
 	} 
-		else { this.setState({ message: "Invalid credentials"+response.status+response }) } });
+	else { this.setState({ message: "Invalid credentials"+response.status+response }) } });
   }
 
   render() {

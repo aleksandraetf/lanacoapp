@@ -7,15 +7,18 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.lanaco.mentor.dao.AdministratorDAO;
 import com.lanaco.mentor.dao.AirCompanyDAO;
 import com.lanaco.mentor.dao.AirplaneDAO;
 import com.lanaco.mentor.dao.DestinationDAO;
 import com.lanaco.mentor.dao.FlightDAO;
+import com.lanaco.mentor.dao.UserDAO;
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
 import com.lanaco.mentor.model.Airplane;
 import com.lanaco.mentor.model.Destination;
 import com.lanaco.mentor.model.Flight;
+import com.lanaco.mentor.model.User;
 import com.lanaco.mentor.service.FlightService;
 
 @Service
@@ -32,6 +35,9 @@ public class FlightServiceImpl implements FlightService {
 	
 	@Autowired
 	public AirplaneDAO airplaneDAO;
+	
+	@Autowired
+	public AdministratorDAO administratorDAO;
 	
 
 	@Override
@@ -171,6 +177,22 @@ public class FlightServiceImpl implements FlightService {
 		}
 
 		return "OK, Flight deleted!";
+	}
+	
+	@Override
+	public ArrayList<Flight> findAllByAdministratorUsername(String username){
+		Administrator administrator=administratorDAO.findOneByUsernameAndIsActive(username, true);
+		if(administrator==null)
+			return null;
+		return flightDAO.
+				findAllByAirCompany_NameAndIsActive(administrator.getAirCompany().getName(),true);
+	}
+	public ArrayList<Flight> findAllByAdministratorEmail(String email){
+		Administrator administrator=administratorDAO.findOneByEmailAndIsActive(email, true);
+		if(administrator==null)
+			return null;
+		return flightDAO.
+				findAllByAirCompany_NameAndIsActive(administrator.getAirCompany().getName(),true);
 	}
 
 }

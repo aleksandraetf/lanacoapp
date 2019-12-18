@@ -84,9 +84,6 @@ class AirplanePage extends Component {
             flight:{
 				id: event.target.value
 			},
-			user:{
-				email: this.state.email
-			},
 			numberOfTickets: this.state.numberOfTickets
         }
 		console.log(dataToSend);
