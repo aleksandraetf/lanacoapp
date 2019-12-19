@@ -68,7 +68,7 @@ public class FlightServiceImpl implements FlightService {
 		}
 		
 		if(airCompanyDAO.findOneByIdAndIsActive(recObj.getAirCompany().getId(),true)==null)
-			return "Fail, ne postoji referencirana Aviokompanija("+recObj.getAirCompany().getName()+"), let nije sacuvan!";
+			return "Fail, ne postoji referencirana Aviokompanija("+recObj.getAirCompany().getId()+"), let nije sacuvan!";
 		
 		if(destinationDAO.findOneByIdAndIsActive(recObj.getDestination().getId(),true)==null)
 			return "Fail, ne postoji referencirana Destinacija("+recObj.getDestination().getName()+"), let nije sacuvan!";

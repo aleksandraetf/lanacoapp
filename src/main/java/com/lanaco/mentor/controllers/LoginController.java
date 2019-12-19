@@ -62,9 +62,11 @@ public class LoginController {
 			return new ResponseEntity<String>("Fail, Login Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		try {
+			User user=userDAO.findOneByEmailAndIsActive(reqUser.getEmail(), true);
+			if(user==null)
+				return new ResponseEntity<String>("Ne postoji dati administrator!", HttpStatus.FORBIDDEN);
 			request.login(reqUser.getEmail(), reqUser.getPassword());
 			request.getSession().setAttribute("email",reqUser.getEmail());
-			User user=userDAO.findOneByEmailAndIsActive(reqUser.getEmail(), true);
 			System.out.println("Role:"+reqUser.getRequestedRole());
 			return new ResponseEntity<String>("OK", HttpStatus.OK);
 				
@@ -118,11 +120,13 @@ public class LoginController {
 			return new ResponseEntity<String>("Fail, Login Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		try {
+			System.out.println("Koji k ");
 			Supervisor supervisor=supervisorDAO.findOneByEmail(reqUser.getEmail());
 			if(supervisor==null)
 				return new ResponseEntity<String>("NO", HttpStatus.BAD_REQUEST);
 			request.login(reqUser.getEmail(),reqUser.getPassword());
 			request.getSession().setAttribute("email",reqUser.getEmail());
+			return new ResponseEntity<String>("Ok",HttpStatus.OK);
 		}
 		catch(javax.servlet.ServletException ex) {
 			ex.printStackTrace();
@@ -132,8 +136,6 @@ public class LoginController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("Already logged!", HttpStatus.BAD_REQUEST);
 		}
-		
-		return new ResponseEntity<String>("Not valid role.", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping(value = "/isAuthenticated/")
@@ -188,6 +190,7 @@ public class LoginController {
 		try {
 			userDAO.save(user);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return new ResponseEntity<String>("User could not be saved!", HttpStatus.BAD_REQUEST);
 		}
 

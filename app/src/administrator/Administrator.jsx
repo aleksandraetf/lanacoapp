@@ -86,7 +86,7 @@ logOut() {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Pocetna strana</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Administrator Pocetna</h1></td>
                              </tr>
                         </tbody>
                     </Table>
