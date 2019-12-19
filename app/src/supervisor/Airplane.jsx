@@ -130,7 +130,7 @@ class AirplanePage extends Component {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Airplane Brand:
+                                        Brend aviona:
                                     </InputGroupAddon>
                                     <Input
                                         type="text" name="brand" id="brand" value={this.state.brand} onChange={this.handleInputChange}
@@ -139,7 +139,7 @@ class AirplanePage extends Component {
 
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Airplane Seats:
+                                        Broj sjedista:
                                     </InputGroupAddon>
                                     <Input
                                         type="number" name="seats" id="seats" value={this.state.seats} onChange={this.handleInputChangeSeats}
@@ -148,7 +148,7 @@ class AirplanePage extends Component {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Airplane</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj avion</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -163,23 +163,24 @@ class AirplanePage extends Component {
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Airplane</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/airplane" }>Airplanes</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>{'  '}
-                    <Table >
-                        <thead>
-                            <tr><th>ID</th><th>Brand</th><th>Seats</th></tr>
+                <Button onClick={this.logOut}>Log Out</Button>{'  '}
+                 <br></br><br></br>
+                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novi avion</Button><br></br><br></br>
+					<Button  onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
+					<Button onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
+					<Button  onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
+					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+				   <Table striped bordered hover>       
+                   <thead>
+                            <tr><th>Brend</th><th>Broj sjedista</th></tr>
                         </thead>
                         <tbody>
                             
                             {
                                 airplanes.map((airplane) => {
-                                    return <tr key={airplane.id}><td>{airplane.id}</td><td>{airplane.brand}</td><td>{airplane.seats}</td>
+                                    return <tr key={airplane.id}><td>{airplane.brand}</td><td>{airplane.seats}</td>
 										<td>
-												<Button style={{ backgroundColor: "#923cb5" }} value={airplane.brand} onClick={this.handleDelete}>DELETE</Button>
+												<Button style={{  }} value={airplane.brand} onClick={this.handleDelete}>Obrisi</Button>
 										</td>
 									</tr>
                                 })

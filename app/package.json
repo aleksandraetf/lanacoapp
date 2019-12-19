@@ -5,6 +5,7 @@
   "proxy": "http://127.0.0.1:8080",
   "dependencies": {
     "@progress/kendo-react-dropdowns": "^3.9.0",
+    "bootstrap": "^4.4.1",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",

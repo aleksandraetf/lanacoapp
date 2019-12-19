@@ -155,7 +155,7 @@ class AirplanePage extends Component {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Flight Date:
+                                        Datum leta:
                                     </InputGroupAddon>
                                     <Input
                                         type="date" name="date" id="date" value={this.state.date} onChange={this.handleInputChange}
@@ -164,7 +164,7 @@ class AirplanePage extends Component {
 
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Reserved Seats:
+                                        Broj rezervisanih sjedista:
                                     </InputGroupAddon>
                                     <Input
                                         type="number" name="reserved" id="reserved" value={this.state.reserved} onChange={this.handleInputChange}
@@ -173,7 +173,7 @@ class AirplanePage extends Component {
 								
 								<InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Price:
+                                        Cijena:
                                     </InputGroupAddon>
                                     <Input
 									type="number" name="price" id="price" value={this.state.price} onChange={this.handleInputChange}
@@ -183,7 +183,7 @@ class AirplanePage extends Component {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Flight</Button>
+                                <Button  onClick={this.handleSubmit}>Dodaj let</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -192,34 +192,34 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Buy tickets</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Kupi karte</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleHistory}>History</Button>
+					<Button onClick={this.logOut}>Log Out</Button><br></br><br></br>
+					<Button onClick={this.handleHistory}>Istorija</Button><br></br><br></br>
 					<InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Number of tickets :
-                                    </InputGroupAddon>
+                                        Broj karata :
+                                    </InputGroupAddon><br></br><br></br>
                                     <Input
                                         type="number" name="numberOfTickets" id="numberOfTickets" value={this.state.numberOfTickets} onChange={this.handleInputChange}
-                                    ></Input>
+                                    ></Input> <br></br><br></br>
                     </InputGroup>
-                    <Table >
+                    <Table striped hover bordered >
                         <thead>
-                            <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
+                            <tr><th>Cijena</th><th>Broj rezervisanih sjedista</th><th>Destinacija</th><th>Avion</th><th>Avio kompanija</th><th>Datum</th></tr>
                         </thead>
                         <tbody>
                             {
                                 flights.map((flight) => {
-                                    return <tr key={flight.id}><td>{flight.id}</td><td>{flight.price}</td><td>{flight.seatsReserver}</td>
+                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserver}</td>
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
 									<td>{flight.flightDate}</td>
 									<td>
-										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleBuy}>Buy</Button>
+										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleBuy}>Kupi</Button>
 									</td>
 									</tr>
                                 })

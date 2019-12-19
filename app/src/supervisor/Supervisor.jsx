@@ -163,23 +163,23 @@ class AirplanePage extends Component {
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Aircompany</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/aircompany" }>Aircompanies</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/supervisor/airplane" }>Airplanes</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>{'  '}
-                    <Table >
+                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novu avio kompaniju</Button>
+					<Button onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
+					<Button  onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
+					<Button  onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
+					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+					<Button  onClick={this.logOut}>Log Out</Button>{'  '}
+                    <Table striped bordered hover >
                         <thead>
-                            <tr><th>ID</th><th>Brand</th><th>Seats</th></tr>
+                            <tr><th>Brend</th><th>Broj sjedista</th></tr>
                         </thead>
                         <tbody>
                             
                             {
                                 airplanes.map((airplane) => {
-                                    return <tr key={airplane.id}><td>{airplane.id}</td><td>{airplane.brand}</td><td>{airplane.seats}</td>
+                                    return <tr key={airplane.id}><td>{airplane.brand}</td><td>{airplane.seats}</td>
 										<td>
-												<Button style={{ backgroundColor: "#923cb5" }} value={airplane.brand} onClick={this.handleDelete}>DELETE</Button>
+												<Button style={{ backgroundColor: "#923cb5" }} value={airplane.brand} onClick={this.handleDelete}>Obrisi</Button>
 										</td>
 									</tr>
                                 })

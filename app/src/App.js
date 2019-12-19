@@ -7,7 +7,8 @@ import SupervisorAirplane from './supervisor/Airplane';
 import SupervisorAircompany from './supervisor/Aircompany';
 import SupervisorFlight from './supervisor/Flight';
 import Supervisor from './supervisor/Supervisor';
-import History from './user/History'
+import History from './user/History';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 import User from './user/User';

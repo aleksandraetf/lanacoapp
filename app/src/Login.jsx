@@ -99,20 +99,20 @@ class Login extends Component {
 		else if(this.refs.roleRef.value==="SUPERVISOR")
 			this.props.history.push('/supervisor');
 	} 
-	else { this.setState({ message: "Invalid credentials"+response.status+response }) } });
+	else { this.setState({ message: "Pogresno korisnicko ime ili sifra. " }) } });
   }
 
   render() {
     return (
-      <div style={{ backgroundColor: '#923cb5', backgroundImage: `linear-gradient(150deg, #000000 0%, #923cb5 70%)`, margin: 0, height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center', }}>
-        <h1 style={{ color: "#923cb5" }}>Login page</h1>
-        <Container >
+      <div style={{  margin: 0, height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+        <h1 style={{  textAlign:'center'}}>Login</h1>
+      <Container >
           <div>
-            <InputGroup size="sm">
+          <InputGroup size="sm">
               <InputGroupAddon sm={3} addonType="prepend" className=" bg-dark">
                 Mail:
               </InputGroupAddon>
-              <Input style={{ backgroundColor: '#923cb5', backgroundImage: `linear-gradient(50deg, #923cb5 0%, #000000 5%)`, color: "#923cb5" }}
+              <Input style={{ }}
                 type="text" name="email" id="email" value={this.state.email} onChange={this.handleInputChange} onBlur={this.handleMailInputChange}>
 
               </Input>
@@ -121,44 +121,45 @@ class Login extends Component {
               <InputGroupAddon addonType="prepend" style={{ backgroundColor: "#923cb5" }}>
                 Password:
               </InputGroupAddon>
-              <Input className="bg-dark text-success" style={{ backgroundColor: '#923cb5', backgroundImage: `linear-gradient(50deg, #000000 0%, #923cb5 99%)` }}
+              <Input className=" text-success" style={{ }}
                 type="password" name="password" id="password" value={this.state.password} onChange={(event) => this.handleInputChange(event)} onBlur={this.handlePassInputChange}>
               </Input>
             </InputGroup>
             <p style={{ color: '#923cb5' }}>{this.state.message}</p>
             <br></br>
-			<select ref="roleRef" name="custom-search-select"
-									className="custom-search-select">
+			<select  ref="roleRef" name="custom-search-select"
+									className="custom-search-select form-control">
 				  <option value="SUPERVISOR">Supervisor</option>
 				  <option value="ADMINISTRATOR">Administrator</option>
 				  <option selected value="USER">User</option>
-			</select>
-            <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Log In</Button>{'  '}
+			</select><br></br><br></br>
+      <Button style={{  }} onClick={this.handleSubmit}>Log In</Button>{'  '} <br></br><br></br>    
 			
 			
 			
 			
-			
+					
+            <h1 style={{ textAlign:'center' }}>Registracija</h1>
 			<InputGroup size="sm">
               <InputGroupAddon sm={3} addonType="prepend" className=" bg-dark">
                 Mail:
               </InputGroupAddon>
-              <Input style={{ backgroundColor: '#923cb5', backgroundImage: `linear-gradient(50deg, #923cb5 0%, #000000 5%)`, color: "#923cb5" }}
+              <Input style={{ }}
                 type="text" name="registerEmail" id="registerEmail" value={this.state.registerEmail} onChange={this.handleInputChange} onBlur={this.handleMailInputChange}>
 
               </Input>
             </InputGroup>
             <InputGroup size="sm">
-              <InputGroupAddon addonType="prepend" style={{ backgroundColor: "#923cb5" }}>
+              <InputGroupAddon addonType="prepend" style={{ }}>
                 Password:
               </InputGroupAddon>
-              <Input className="bg-dark text-success" style={{ backgroundColor: '#923cb5', backgroundImage: `linear-gradient(50deg, #000000 0%, #923cb5 99%)` }}
+              <Input className=" text-success" style={{  }}
                 type="password" name="registerPassword" id="registerPassword" value={this.state.registerPassword} onChange={(event) => this.handleInputChange(event)} onBlur={this.handlePassInputChange}>
               </Input>
             </InputGroup>
-            <p style={{ color: '#923cb5' }}>{this.state.message}</p>
+            <p style={{ }}>{this.state.message}</p>
             <br></br>
-            <Button style={{ backgroundColor: "#923cb5" }} onClick={this.register}>Register</Button>{'  '}
+            <Button style={{  }} onClick={this.register}>Register</Button>{'  '}
             <Link className="btn btn-outline-danger" to="/">Cancel</Link>
           </div>
         </Container>

@@ -68,7 +68,7 @@ logOut() {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Destination Name:
+                                        Ime destinacije:
                                     </InputGroupAddon>
                                     <Input
                                         type="text" name="name" id="name" value={this.state.name} onChange={this.handleInputChange}
@@ -77,7 +77,7 @@ logOut() {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Destination</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj destinaciju</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -86,16 +86,16 @@ logOut() {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Administrator Home Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Pocetna strana</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/administrator/airplane" }>Airplanes</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/administrator/destination" }>Destinations</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/administrator/flight" }>Flights</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
+                    <Button  onClick={() => window.location="/administrator/airplane" }>Avioni</Button>
+					<Button  onClick={() => window.location="/administrator/destination" }>Destinacije</Button>
+					<Button  onClick={() => window.location="/administrator/flight" }>Letovi</Button>
+					<Button  onClick={this.logOut}>Log Out</Button>
                 </Container>
             </div>
         );

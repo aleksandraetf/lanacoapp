@@ -104,7 +104,7 @@ logOut() {
                 credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Destination Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Destination not saved! Fields can not be empty and it is not possible to add existing Destination!" +response.status}) } });
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Destinacija je sacuvana.", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Destinacija nije sacuvana! Polja ne mogu biti prazna. Ne mozete dodati vec postojecu destinaciju!"}) } });
     }
 
     render() {
@@ -126,7 +126,7 @@ logOut() {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Destination Name:
+                                       Ime destinacije:
                                     </InputGroupAddon>
                                     <Input
                                         type="text" name="name" id="name" value={this.state.name} onChange={this.handleInputChange}
@@ -135,7 +135,7 @@ logOut() {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Destination</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj novu destinaciju</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -144,26 +144,26 @@ logOut() {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Destination Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Destinacije</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button style={{ backgroundColor: "#923cb5" }} onClick={() => this.toggle('showModal')}>Add new Destination</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={() => window.location="/administrator" }>Back To Home Page</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
-                    <Table >
+                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novu destinaciju</Button><br></br><br></br>
+					<Button  onClick={() => window.location="/administrator" }>Vrati se na pocetnu stranu</Button>
+					<Button onClick={this.logOut}>Log Out</Button>
+                    <Table striped bordered hover >
                         <thead>
-                            <tr><th>ID</th><th>Name</th></tr>
+                            <tr><th>Ime destinacije</th></tr>
                         </thead>
                         <tbody>
                             {
                                 destinations.map((destination) => {
-                                    return <tr key={destination.id}><td>{destination.id}</td><td>{destination.name}</td>
+                                    return <tr key={destination.id}><td>{destination.name}</td>
 									
 									<td>
-										<Button value={destination.name} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>DELETE</Button>
+										<Button value={destination.name} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>Obrisi</Button>
 									</td>
 									
 									</tr>
