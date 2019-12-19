@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table, Input } from 'reactstrap';
+import Moment from 'moment';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -191,22 +192,13 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Buy tickets</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Istorija</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
 					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.logOut}>Log Out</Button>
-					<Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleHistory}>History</Button>
-					<InputGroup size="sm">
-                                    <InputGroupAddon sm={3} addonType="prepend">
-                                        Number of tickets :
-                                    </InputGroupAddon>
-                                    <Input
-                                        type="number" name="numberOfTickets" id="numberOfTickets" value={this.state.numberOfTickets} onChange={this.handleInputChange}
-                                    ></Input>
-                    </InputGroup>
                     <Table >
                         <thead>
                             <tr><th>ID</th><th>Price</th><th>Reserved</th><th>Destination</th><th>Airplane</th><th>Aircompany</th><th>Date</th></tr>
@@ -214,9 +206,10 @@ class AirplanePage extends Component {
                         <tbody>
                             {
                                 tickets.map((ticket) => {
+									Moment.locale('en');
                                     return <tr key={ticket.id}><td>{ticket.id}</td><td>{ticket.flight.price}</td><td>{ticket.numberOfTickets}</td>
 									<td>{ticket.flight.destination.name}</td><td>{ticket.flight.airplane.brand}</td><td>{ticket.flight.airCompany.name}</td>
-									<td>{ticket.flight.flightDate}</td>
+									<td>{Moment(ticket.flight.flightDate).format('YYYY-MM-DD : hh:MM:ss')}</td>
 									</tr>
                                 })
                             }

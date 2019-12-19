@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table, Input } from 'reactstrap';
+import Moment from 'moment';
 
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
@@ -16,7 +17,6 @@ class AirplanePage extends Component {
             }
         });
 		this.logOut = this.logOut.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleBuy=this.handleBuy.bind(this);
 		this.handleHistory=this.handleHistory.bind(this);
@@ -26,23 +26,6 @@ class AirplanePage extends Component {
 	handleHistory(){
 		window.location='/user/history';
 	}
-	
-	loadDataAircompanies() {
-        fetch('/api/aircompany/')
-            .then(response => response.json())
-            .then(data => this.setState({ aircompanies: data }));
-    }
-	
-	loadDataDestinations() {
-        fetch('/api/destination/')
-            .then(response => response.json())
-            .then(data => this.setState({ destinations: data }));
-    }
-	loadDataAirplanes() {
-        fetch('/api/airplane/')
-            .then(response => response.json())
-            .then(data => this.setState({ airplanes: data }));
-    }
 
     loadData() {
         fetch('/api/flight/')
@@ -101,41 +84,23 @@ class AirplanePage extends Component {
                 credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+        ).then(response => { 
+			if (response.status === 202) {
+				this.loadData();
+				this.cleanData(); 
+				toast.success("Uspjesno ste rezervisali karte!", { position: toast.POSITION_TOP_RIGHT }); 
+			} else if(response.status==500){
+				toast.error("Server nedostupan.", { position: toast.POSITION_TOP_RIGHT }); 
+			}else{
+				toast.error("Nije moguce rezervisati trazeni broj karata!", { position: toast.POSITION_TOP_RIGHT }); 
+			}
+			});
 	}
 
     handleInputChange(event) {
         this.setState({ [event.target.name]: event.target.value});
     }
 
-
-    handleSubmit(event) {
-		
-		
-        let dataToSend = {
-            price: this.state.price,
-            flightDate: this.state.date,
-            airCompany: this.state.aircompanies.filter((a)=>{return a.name===this.refs.aircompanyRef.value})[0].id, //this.state.aircompanyId,
-            airplane:this.state.airplanes.filter((a)=>{return a.brand===this.refs.airplaneRef.value})[0].id, // this.state.airplaneId,
-            destination:this.state.destinations.filter((a)=>{return a.name===this.refs.destinationRef.value})[0].id// this.state.destinationId
-        }
-
-        fetch('/api/flight/',
-            {
-                method: 'POST',
-                headers:
-                {
-
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    credentials: 'include'
-                },
-                mode:'cors',
-                //credentials:'include',
-                body: JSON.stringify(dataToSend),
-            }
-        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Flight Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
-    }
 
     render() {
         console.log(this.state);
@@ -210,14 +175,15 @@ class AirplanePage extends Component {
                     </InputGroup>
                     <Table striped hover bordered >
                         <thead>
-                            <tr><th>Cijena</th><th>Broj rezervisanih sjedista</th><th>Destinacija</th><th>Avion</th><th>Avio kompanija</th><th>Datum</th></tr>
+                            <tr><th>Cijena</th><th>Broj rezervisanih sjedista</th><th>Ukupan broj sjedista</th><th>Destinacija</th><th>Avion</th><th>Avio kompanija</th><th>Datum</th></tr>
                         </thead>
                         <tbody>
                             {
                                 flights.map((flight) => {
-                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserver}</td>
+									Moment.locale('en');
+                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserved}</td><td>{flight.airplane.seats}</td>
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
-									<td>{flight.flightDate}</td>
+									<td>{Moment(flight.flightDate).format('YYYY-MM-DD : hh:MM:ss')}</td>
 									<td>
 										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleBuy}>Kupi</Button>
 									</td>

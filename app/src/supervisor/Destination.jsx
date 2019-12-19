@@ -150,14 +150,11 @@ logOut() {
                     </Table>
                 </Container>
                 <Container>
-                <Button className="btn-default" onClick={this.logOut}>Log Out</Button>
+                <Button className="btn-default" onClick={this.logOut}>Odjavi se</Button>
                  <br></br> <br></br>
                     <Button style={{  }} onClick={() => this.toggle('showModal')}>Dodaj novu destinaciju</Button>
                     <br></br> <br></br>
-					<Button className="btn-default" onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
-					<Button className="btn-default" onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
-					<Button className="btn-default" onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
-					<Button className="btn-default" onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+					<Button className="btn-default" onClick={() => window.location="/supervisor" }>Vrati se na pocetnu</Button>
 				   <Table striped bordered hover>
                    <thead>
                             <tr><th>Ime</th><th></th></tr>

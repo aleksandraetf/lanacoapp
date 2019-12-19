@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table, Input } from 'reactstrap';
-
+import Moment from 'moment';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { checkIfLogged } from '../common.js';
+import DateTimePicker from 'react-datetime-picker';
 
 class AirplanePage extends Component {
 
@@ -19,6 +20,7 @@ class AirplanePage extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleDelete=this.handleDelete.bind(this);
+		this.onChange=this.onChange.bind(this);
 		
 
         this.state = { flights : [],aircompanies: [] ,airplanes: [] ,destinations: [], showModal: false, message: "", 
@@ -82,6 +84,8 @@ class AirplanePage extends Component {
         ).then(() => window.location="/login");
     }
 
+	onChange = date => this.setState({ date })
+
 	handleDelete(event){
 		console.log(event.target.value);
 		let dataToSend = {
@@ -101,7 +105,7 @@ class AirplanePage extends Component {
                 credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Let je uspjesno obrisan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
 	}
 
     handleInputChange(event) {
@@ -110,15 +114,20 @@ class AirplanePage extends Component {
 
 
     handleSubmit(event) {
-		
-		
-        let dataToSend = {
+		let dataToSend=null;
+		try{
+        dataToSend = {
             price: this.state.price,
+			seatsReserved: this.state.reserved,
             flightDate: this.state.date,
             airCompany: this.state.aircompanies.filter((a)=>{return a.name===this.refs.aircompanyRef.value})[0].id, //this.state.aircompanyId,
             airplane:this.state.airplanes.filter((a)=>{return a.brand===this.refs.airplaneRef.value})[0].id, // this.state.airplaneId,
             destination:this.state.destinations.filter((a)=>{return a.name===this.refs.destinationRef.value})[0].id// this.state.destinationId
         }
+		}catch(e){
+			toast.error("Nisu sva polja popunjena!", { position: toast.POSITION_TOP_RIGHT });
+			return;
+		}
 
         fetch('/api/flight/',
             {
@@ -134,7 +143,7 @@ class AirplanePage extends Component {
                 //credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Flight Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
+        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Let sacuvan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
     }
 
     render() {
@@ -160,9 +169,10 @@ class AirplanePage extends Component {
                                     <InputGroupAddon sm={3} addonType="prepend">
                                        Datum leta:
                                     </InputGroupAddon>
-                                    <Input
-                                        type="date" name="date" id="date" value={this.state.date} onChange={this.handleInputChange}
-                                    ></Input>
+                                    <DateTimePicker
+									  onChange={this.onChange}
+									  value={this.state.date}
+									/>
                                 </InputGroup>
 
                                 <InputGroup size="sm">
@@ -211,7 +221,7 @@ class AirplanePage extends Component {
                               
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Add Flight</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj let</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -220,20 +230,17 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Flight Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Letovi</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                    <Button onClick={this.logOut}>Log Out</Button>
+                    <Button onClick={this.logOut}>Odjavi se</Button>
                  <br></br><br></br>
                     <Button  onClick={() => this.toggle('showModal')}>Dodaj novi let</Button>
                     <br></br><br></br>
-					<Button  onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
-					<Button onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
-					<Button  onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
-					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+					<Button  onClick={() => window.location="/supervisor" }>Vrati se na pocetnu</Button>
                     <br></br>
 				   <Table striped bordered hover>
                         <thead>
@@ -242,9 +249,10 @@ class AirplanePage extends Component {
                         <tbody>
                             {
                                 flights.map((flight) => {
-                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserver}</td>
+									Moment.locale('en');
+                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserved}</td>
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
-									<td>{flight.flightDate}</td>
+									<td>{Moment(flight.flightDate).format('YYYY-MM-DD : hh:MM:ss')}</td>
 									<td>
 										<Button value={flight.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>Obrisi</Button>
 									</td>

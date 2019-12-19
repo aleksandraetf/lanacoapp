@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, InputGroup, InputGroupAddon, Container, Input } from 'reactstrap';
 import { checkIfLogged } from './common.js'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 class Login extends Component {
   
@@ -25,7 +27,7 @@ class Login extends Component {
     this.state = {role: "", registerEmail:"",registerPassword:"", email: "", password: "", message: "" };
   }
   
-  register() {
+    register() {
 	  let dataToSend = {
             email: this.state.registerEmail,
 			password: this.state.registerPassword
@@ -43,18 +45,15 @@ class Login extends Component {
         body: JSON.stringify(dataToSend),
       }
     ).then(response => { 
-		if (response.status === 200) {
-			if(this.refs.roleRef.value==="USER"){
-				this.props.history.push('/user');
-			}
-			else if(this.refs.roleRef.value==="ADMINISTRATOR"){
-				this.props.history.push('/administrator');
-			}
-			else if(this.refs.roleRef.value==="SUPERVISOR")
-				this.props.history.push('/supervisor');
-			}
-		else { 
-			this.setState({ message: "Invalid credentials"+response.status+response }) 
+		if (response.status === 202) {
+			this.setState({ message: "Uspjesno ste se registrovali. "});
+		}else if(response.status==400) { 
+			this.setState({ message: "Email je vec u upotrebi. "});
+		}
+		else if(response.status==500) { 
+			this.setState({ message: "Server trenutno nije dostupan. "});
+		}else{ 
+			this.setState({ message:"Nepoznata greska. "});
 		}
 		});
   }
@@ -99,7 +98,7 @@ class Login extends Component {
 		else if(this.refs.roleRef.value==="SUPERVISOR")
 			this.props.history.push('/supervisor');
 	} 
-	else { this.setState({ message: "Pogresno korisnicko ime ili sifra. " }) } });
+	else { this.setState({ message: "Pogresno korisnicko ime ili lozinka. " }) } });
   }
 
   render() {
@@ -160,7 +159,6 @@ class Login extends Component {
             <p style={{ }}>{this.state.message}</p>
             <br></br>
             <Button style={{  }} onClick={this.register}>Register</Button>{'  '}
-            <Link className="btn btn-outline-danger" to="/">Cancel</Link>
           </div>
         </Container>
       </div>

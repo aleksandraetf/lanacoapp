@@ -157,19 +157,16 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 style={{ color: "#923cb5" }}>Airplane Page</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Avioni</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                <Button onClick={this.logOut}>Log Out</Button>{'  '}
+                <Button onClick={this.logOut}>Odjavi se</Button>{'  '}
                  <br></br><br></br>
                     <Button  onClick={() => this.toggle('showModal')}>Dodaj novi avion</Button><br></br><br></br>
-					<Button  onClick={() => window.location="/supervisor/flight" }>Letovi</Button>
-					<Button onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
-					<Button  onClick={() => window.location="/supervisor/aircompany" }>Avio kompanije</Button>
-					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
+					<Button  onClick={() => window.location="/supervisor" }>Vrati se na pocetnu</Button>
 				   <Table striped bordered hover>       
                    <thead>
                             <tr><th>Brend</th><th>Broj sjedista</th></tr>
