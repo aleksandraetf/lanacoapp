@@ -41,25 +41,17 @@ public class FlightController {
 	
 	@GetMapping(path="/admin/",produces="application/json")
 	public ResponseEntity<ArrayList<Flight>> getAllByAdministrator(HttpServletRequest request){
-		System.out.println("Uslo u flight by admin");
 		ArrayList<Flight> response=flightService.findAllByAdministratorEmail((String)request.getSession().getAttribute("email"));
 		if (response==null) {
 			return new ResponseEntity<ArrayList<Flight>>(HttpStatus.BAD_REQUEST);
 		}
-		for(Flight flight : response)
-			System.out.println(flight.getId());
 		
 		return new ResponseEntity<ArrayList<Flight>>(response,HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Flight recObjFlight, HttpServletRequest request){
-		System.out.println("Uslo u flight");
-		System.out.println(recObjFlight.getAirCompany()+" "
-				+recObjFlight.getAirplane()+" "
-				+recObjFlight.getSeatsReserved());
 		String response=flightService.save(recObjFlight);
-		System.out.println("Response:"+response);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

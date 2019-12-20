@@ -34,7 +34,6 @@ public class AirplaneServiceImpl implements AirplaneService{
 	}
 
 
-	//nema smisla implementirati
 	@Override
 	public Airplane getOne(String name) {
 		// TODO Auto-generated method stub
@@ -77,15 +76,12 @@ public class AirplaneServiceImpl implements AirplaneService{
 			return "Fail, airplane not found!";
 		}
 		plane.setIsActive(recObj.getIsActive());
-		//nema smisla da se moze promijeniti broj sjedista i brend modela aviona
 		
 		try {
 			airplaneDAO.save(plane);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in PUT: ]", ex1);
 			return "Exception in airplane Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in PUT: ]", ex2);
 			return "Exception in airplane Controller PUT (ex2), contact admins!";
 		}
 		return "OK, plane edited!";
@@ -102,7 +98,6 @@ public class AirplaneServiceImpl implements AirplaneService{
 			return "Fail, airplane with provided brand not found!";
 		}
 
-		//replace with code mark as inactive
 		airplane.setIsActive(false);
 		try {
 			airplaneDAO.save(airplane);
@@ -115,7 +110,6 @@ public class AirplaneServiceImpl implements AirplaneService{
 		return "OK, Airplane deleted!";
 	}
 	
-	//potrebno za save
 	@Override
 	public Airplane findOneByBrandAndSeats(String brand, int seats) {
 		return airplaneDAO.findOneByBrandAndSeatsAndIsActive(brand, seats,true);

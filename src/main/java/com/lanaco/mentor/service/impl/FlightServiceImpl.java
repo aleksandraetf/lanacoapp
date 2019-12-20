@@ -55,11 +55,6 @@ public class FlightServiceImpl implements FlightService {
 
 	@Override
 	public String save(Flight recObj) {
-		System.out.println("+++++++++++++++++++++++++++++++++++++++");
-		System.out.println("Prvi:"+recObj.getFlightDate()+" companyid:"
-				+recObj.getAirCompany().getId()+"destid:"+recObj.getDestination().getId()
-				+"price:"+recObj.getPrice()+"seatsRes:"+recObj.getSeatsReserved()
-				+"airplaneid:"+recObj.getAirplane().getId());
 		if (recObj.getFlightDate()==null || recObj.getAirCompany()==null
 				|| recObj.getAirplane()==null ||
 				recObj.getDestination()==null 

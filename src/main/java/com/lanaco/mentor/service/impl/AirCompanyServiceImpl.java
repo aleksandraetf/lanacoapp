@@ -41,10 +41,8 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		try {
 			airCompanyDAO.save(aircompany);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in POST: ]", ex1);
 			return "Exception in Aircompany Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in POST: ]", ex2);
 			return "Exception in Aircompany Controller POST (ex2), contact admins!";
 		}
 		return "OK, Air company saved";
@@ -71,10 +69,8 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		try {
 			airCompanyDAO.save(aircompany);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in PUT: ]", ex1);
 			return "Exception in AirCompany Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in PUT: ]", ex2);
 			return "Exception in AirCompany Controller PUT (ex2), contact admins!";
 		}
 		return "OK, Air company edited!";
@@ -94,10 +90,8 @@ public class AirCompanyServiceImpl implements AirCompanyService {
 		try {
 			airCompanyDAO.save(aircompany);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in DELETE: ]", ex1);
 			return "Exception in AirCompany Controller DELETE (ex1), contact admins!";
 		} catch (Exception ex2) {
-		//	log.error("[User Controller exception in DELETE: ]", ex2);
 			return "Exception in AirCompany Controller DELETE (ex2), contact admins!";
 		}
 

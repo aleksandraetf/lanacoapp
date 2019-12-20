@@ -42,10 +42,8 @@ public class DestinationServiceImpl implements DestinationService{
 		try {
 			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in POST: ]", ex1);
 			return "Exception in Destination Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
-		//	log.error("[User Controller exception in POST: ]", ex2);
 			return "Exception in Destination Controller POST (ex2), contact admins!";
 		}
 		return "OK, Destination saved";
@@ -61,7 +59,6 @@ public class DestinationServiceImpl implements DestinationService{
 			return "Fail, destination with provided id not found!";
 		}
 			
-		//provjeravam da li postoji neka druga destinacija sa tim nazivom
 		Destination destinationOther = destinationDAO.findOneByNameAndIsActive(recObj.getName(),true);
 		if (destinationOther != null) {
 			return "Fail, destination with provided name already exists but name must be unique!";
@@ -73,10 +70,8 @@ public class DestinationServiceImpl implements DestinationService{
 		try {
 			destinationDAO.save(destination);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in PUT: ]", ex1);
 			return "Exception in Destination Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in PUT: ]", ex2);
 			return "Exception in Destination Controller PUT (ex2), contact admins!";
 		}
 		return "OK, Destination edited!";
@@ -91,7 +86,6 @@ public class DestinationServiceImpl implements DestinationService{
 			return "Fail, destination with provided name not found!";
 		}
 
-		//replace with code mark as inactive
 		destination.setIsActive(false);
 		
 		try {

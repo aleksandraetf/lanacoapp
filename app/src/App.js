@@ -7,6 +7,7 @@ import SupervisorAirplane from './supervisor/Airplane';
 import SupervisorAircompany from './supervisor/Aircompany';
 import SupervisorFlight from './supervisor/Flight';
 import Supervisor from './supervisor/Supervisor';
+import SupervisorAdministrator from './supervisor/Administrator';
 import History from './user/History';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -131,6 +132,15 @@ class App extends Component {
             render={props => {
               return (
                 <AdministratorFlight {...props} />
+              );
+            }}
+          />
+		  <Route
+            path="/supervisor/administrator"
+            exact={true}
+            render={props => {
+              return (
+                <SupervisorAdministrator {...props} />
               );
             }}
           />

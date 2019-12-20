@@ -38,49 +38,36 @@ public class AirplaneController {
 	}
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Airplane recObjAirplane, HttpServletRequest request){
-		System.out.println("Eo usao u post.");
 		String response=airplaneService.save(recObjAirplane);
 		if (response.contains("Fail")) {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}
 	
 	@PutMapping(path="/",produces="application/json")
 	public ResponseEntity<String> edit(@RequestBody  Airplane recObjAirplane, HttpServletRequest request){
-		System.out.println(recObjAirplane.getId()+recObjAirplane.getBrand()
-			+recObjAirplane.getIsActive()+recObjAirplane.getSeats());
 		String response=airplaneService.edit(recObjAirplane);
 		if (response.contains("Fail")) {
-			System.out.println("1");
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
-			System.out.println("2");
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			System.out.println("3");
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}
 	
 	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  Airplane airplane, HttpServletRequest request){
-		System.out.println(airplane.getBrand());
 		String response=airplaneService.flagNotActive(airplane.getBrand());
 		if (response.contains("Fail")) {
-			System.out.println("1");
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
-			System.out.println("2");
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			System.out.println("3");
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}

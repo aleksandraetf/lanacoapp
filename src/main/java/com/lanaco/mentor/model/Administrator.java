@@ -72,9 +72,10 @@ public class Administrator {
 		
 	}
 	
-	public Administrator(String username, String password, Aircompany aircompany, boolean b) {
+	public Administrator(String username,String email, String password, Aircompany aircompany, boolean b) {
 		this.username = username;
 		this.password = password;
+		this.email=email;
 		this.isActive = b;
 		this.airCompany = aircompany;
 	}
