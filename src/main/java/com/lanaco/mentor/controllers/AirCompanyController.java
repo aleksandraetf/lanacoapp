@@ -66,17 +66,12 @@ public class AirCompanyController {
 	
 	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  Aircompany aircompany, HttpServletRequest request){
-		System.out.println(aircompany.getName());
-		//log.info("Poruka");
 		String response=airCompanyService.flagNotActive(aircompany.getName());
 		if (response.contains("Fail")) {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			System.out.println(response);
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}

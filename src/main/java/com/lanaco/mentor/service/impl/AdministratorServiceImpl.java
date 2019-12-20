@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lanaco.mentor.dao.AdministratorDAO;
@@ -22,6 +23,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 	@Autowired
 	public AirCompanyDAO airCompanyDAO;
 	
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
 	public ArrayList<Administrator> getAll() {
@@ -51,13 +55,13 @@ public class AdministratorServiceImpl implements AdministratorService {
 
 	@Override
 	public String save(Administrator recObj) {
-		if (recObj.getUsername() == null || "".equals(recObj.getUsername()) || recObj.getPassword() == null
+		if (recObj.getEmail() == null || "".equals(recObj.getEmail()) || recObj.getPassword() == null
 				|| "".equals(recObj.getPassword()) || recObj.getAirCompany()==null || 
 				recObj.getAirCompany().getName()==null || "".equals(recObj.getAirCompany().getName())) {
 			return "Fail, data missing";
 		}
 		Aircompany airCompany= airCompanyDAO.findOneByNameAndIsActive(recObj.getAirCompany().getName(),true);
-		Administrator admin = adminDAO.findOneByUsernameAndIsActive(recObj.getUsername(),true);
+		Administrator admin = adminDAO.findOneByEmailAndIsActive(recObj.getEmail(),true);
 		if (admin != null) {
 			return "Fail, administrator with provided name already exists but name must be unique!";
 		}
@@ -70,7 +74,8 @@ public class AdministratorServiceImpl implements AdministratorService {
 		
 		
 		try {
-			admin = new Administrator(recObj.getUsername(), recObj.getPassword(),airCompany, recObj.getIsActive());
+			admin = new Administrator("",recObj.getEmail(), bCryptPasswordEncoder.encode(recObj.getPassword()),airCompany,true);
+			admin.setRole(recObj.getRole());
 			adminDAO.save(admin);
 		} catch (IllegalArgumentException ex1) {
 			//log.error("[User Controller exception in POST: ]", ex1);
@@ -112,9 +117,9 @@ public class AdministratorServiceImpl implements AdministratorService {
 	}
 
 	@Override
-	public String flagNotActive(String username) {
-		Administrator administrator = adminDAO.findOneByUsernameAndIsActive(username,true);
-		if (username == null || "".equals(username)) {
+	public String flagNotActive(String email) {
+		Administrator administrator = adminDAO.findOneByEmailAndIsActive(email, true);
+		if (email == null || "".equals(email)) {
 			return "Fail, data missing!";
 		}
 		if (administrator == null) {

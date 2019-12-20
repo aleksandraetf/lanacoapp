@@ -42,7 +42,6 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public String save(Ticket recObj) {
-		System.out.println(recObj.getFlight().getId()+","+recObj.getNumberOfTickets()+","+recObj.getUser().getEmail());
 		if (recObj.getFlight().getId()==null||recObj.getNumberOfTickets()==null || recObj.getNumberOfTickets()<=0
 				|| recObj.getUser()==null) {
 			return "Fail, data missing";

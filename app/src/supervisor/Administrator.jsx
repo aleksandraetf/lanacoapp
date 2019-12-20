@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { Button, Modal, ModalBody, InputGroup, InputGroupAddon, Container, Table, Input } from 'reactstrap';
-
+import Moment from 'moment';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import { checkIfLogged } from '../common.js';
+import DateTimePicker from 'react-datetime-picker';
 
 class AirplanePage extends Component {
 
     constructor(props) {
         super(props);
 
-		checkIfLogged().then(resp => {
+        checkIfLogged().then(resp => {
             if (!resp) {
                 this.props.history.push('/')
             }
@@ -18,26 +19,35 @@ class AirplanePage extends Component {
 		this.logOut = this.logOut.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleInputChangeSeats = this.handleInputChangeSeats.bind(this);
 		this.handleDelete=this.handleDelete.bind(this);
+		this.onChange=this.onChange.bind(this);
+		
 
-
-        this.state = { airplanes : [], showModal: false, message: "", brand: "" , seats: 0}
-
+        this.state = {administrators: [], flights : [],aircompanies: [] ,airplanes: [] ,destinations: [], showModal: false, message: "", 
+					date: "" , reserved: 0 ,price: 0,
+					selectedAircompanyId: 0, selectedAirplaneId: 0, selectedDestinationId:0,email: '',password: ''};
+		
+    }
+	
+	loadDataAircompanies() {
+        fetch('/api/aircompany/')
+            .then(response => response.json())
+            .then(data => this.setState({ aircompanies: data }));
     }
 
     loadData() {
-        fetch('/api/airplane/')
+        fetch('/api/administrator/')
             .then(response => response.json())
-            .then(data => this.setState({ airplanes: data }));
+            .then(data => this.setState({ administrators: data }));
     }
 
     componentWillMount() {
+		this.loadDataAircompanies();
         this.loadData();
     }
 
     cleanData() {
-        this.setState({ message: "", brand: "", seats: 0 });
+        this.setState({ message: "", date: "" , reserved: 0 ,price: 0 , selectedAircompany : ""});
     }
 
     toggle = field => {
@@ -46,7 +56,7 @@ class AirplanePage extends Component {
         });
     };
 
-    logOut() {
+	logOut() {
         fetch('/logout/',
             {
                 method: 'GET',
@@ -59,21 +69,12 @@ class AirplanePage extends Component {
         ).then(() => window.location="/login");
     }
 
+	onChange = date => this.setState({ date })
 
-    handleInputChange(event) {
-        this.setState({ [event.target.name]: event.target.value});
-    }
-
-    handleInputChangeSeats(event) {
-        this.setState({ [event.target.name]: event.target.value });
-    }
-	
 	handleDelete(event){
 		console.log(event.target.value);
-		let dataToSend = {
-            brand: event.target.value
-        }
-        fetch('/api/airplane/',
+		let dataToSend =this.state.administrators.filter((a)=>a.id==event.target.value)[0].email;
+        fetch('/api/administrator/',
             {
                 method: 'DELETE',
                 headers:
@@ -85,22 +86,35 @@ class AirplanePage extends Component {
                 },
                 mode:'cors',
                 credentials:'include',
-                body: JSON.stringify(dataToSend),
+                body: dataToSend,
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData();toast.success("Avion obrisan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); toast.success("Administrator uspjeno obrisan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Greska."}) } });
 	}
 
-    handleSubmit(event) {
-        let dataToSend = {
-            brand: this.state.brand,
-            seats: this.state.seats
-        }
+    handleInputChange(event) {
+        this.setState({ [event.target.name]: event.target.value});
+    }
 
-        fetch('/api/airplane/',
+
+    handleSubmit(event) {
+		let dataToSend=null;
+		try{
+        dataToSend = {
+			email:this.state.email,
+			password: this.state.password,
+			airCompany: this.refs.aircompanyRef.value
+        }
+		}catch(e){
+			toast.error("Nisu sva polja popunjena!", { position: toast.POSITION_TOP_RIGHT });
+			return;
+		}
+
+        fetch('/api/administrator/',
             {
                 method: 'POST',
                 headers:
                 {
+
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     credentials: 'include'
@@ -109,12 +123,13 @@ class AirplanePage extends Component {
                 //credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Avion je sacuvan.", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Avion nije sacuvan! Polja ne mogu biti prazna. Ne mozete dodati vec postojeci avion!" }) } });
+        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Administrator sacuvan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Administrator nije sacuvan!" }) } });
     }
 
     render() {
         console.log(this.state);
-        let airplanes = [...this.state.airplanes];
+		let aircompanies=[...this.state.aircompanies];
+		let administrators=[...this.state.administrators];
         return (
            
             <div style={{ backgroundColor: '#j40a1j', backgroundImage: `linear-gradient(150deg, #000000 30%, #aa2ke9 70%)`, margin: 0, height: '100vh', width: '100%', justifyContent: 'center', alignItems: 'center', }}>
@@ -130,25 +145,33 @@ class AirplanePage extends Component {
                             <div>
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Brend aviona:
+                                       Email:
                                     </InputGroupAddon>
                                     <Input
-                                        type="text" name="brand" id="brand" value={this.state.brand} onChange={this.handleInputChange}
+                                        type="text" name="email" id="email" value={this.state.email} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
 
                                 <InputGroup size="sm">
                                     <InputGroupAddon sm={3} addonType="prepend">
-                                        Broj sjedista:
+                                       Password:
                                     </InputGroupAddon>
                                     <Input
-                                        type="number" name="seats" id="seats" value={this.state.seats} onChange={this.handleInputChangeSeats}
+                                        type="password" name="password" id="password" value={this.state.password} onChange={this.handleInputChange}
                                     ></Input>
                                 </InputGroup>
-                              
+								
+								<select ref="aircompanyRef" name="custom-search-select"
+									className="custom-search-select">
+									<option value="" selected disabled hidden> Izaberite avio kompaniju </option>
+									{	
+										aircompanies.map((a)=> <option key={"a.id"} value={a.name}>
+											{a.name}</option>)
+									}
+								</select>
                                 <p style={{ color: '#923cb5' }}>{this.state.message}</p>
                                 <br></br>
-                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj avion</Button>
+                                <Button style={{ backgroundColor: "#923cb5" }} onClick={this.handleSubmit}>Dodaj administratora</Button>
                             </div>
                         </ModalBody>
                     </Modal>
@@ -157,28 +180,30 @@ class AirplanePage extends Component {
                     <Table>
                         <tbody>
                             <tr>
-                                <td><h1 >Avioni</h1></td>
+                                <td><h1 style={{ color: "#923cb5" }}>Administratori</h1></td>
                              </tr>
                         </tbody>
                     </Table>
                 </Container>
                 <Container>
-                <Button  onClick={() => window.location="/administrator/" }>Vrati se na pocetnu stranu</Button>
-				<br></br><br></br>
-                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novi avion</Button>
-					<Button  onClick={this.logOut}>Log Out</Button>{'  '}
-                    <Table  striped bordered hover>
+                    <Button onClick={this.logOut}>Odjavi se</Button>
+                 <br></br><br></br>
+                    <Button  onClick={() => this.toggle('showModal')}>Dodaj novog administratora</Button>
+                    <br></br><br></br>
+					<Button  onClick={() => window.location="/supervisor" }>Vrati se na pocetnu</Button>
+                    <br></br>
+				   <Table striped bordered hover>
                         <thead>
-                            <tr><th>Brend</th><th>Broj sjedista</th></tr>
+                            <tr><th>Id</th><th>email</th><th>Aviokompanija</th><th>Obrisi</th></tr>
                         </thead>
                         <tbody>
-                            
                             {
-                                airplanes.map((airplane) => {
-                                    return <tr key={airplane.id}><td>{airplane.brand}</td><td>{airplane.seats}</td>
-										<td>
-												<Button style={{ backgroundColor: "#923cb5" }} value={airplane.brand} onClick={this.handleDelete}>Obrisi</Button>
-										</td>
+                                administrators.map((admin) => {
+									Moment.locale('en');
+                                    return <tr key={admin.id}><td>{admin.id}</td><td>{admin.email}</td><td>{admin.airCompany.name}</td>
+									<td>
+										<Button value={admin.id} style={{ backgroundColor: "#923cb5" }} onClick={this.handleDelete}>Obrisi</Button>
+									</td>
 									</tr>
                                 })
                             }

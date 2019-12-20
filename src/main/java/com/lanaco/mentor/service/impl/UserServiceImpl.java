@@ -43,14 +43,11 @@ public class UserServiceImpl implements UserService {
 		}
 
 		user = new User(recObj.getUsername(), recObj.getPassword(),recObj.getEmail(), true);
-		//userDAO baca exception
 		try {
 			userDAO.save(user);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in POST: ]", ex1);
 			return "Exception in user Controller POST (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in POST: ]", ex2);
 			return "Exception in user Controller POST (ex2), contact admins!";
 		}
 		return "OK, user saved";
@@ -72,10 +69,8 @@ public class UserServiceImpl implements UserService {
 		try {
 			userDAO.save(user);
 		} catch (IllegalArgumentException ex1) {
-			//log.error("[User Controller exception in PUT: ]", ex1);
 			return "Exception in User Controller PUT (ex1), contact admins!";
 		} catch (Exception ex2) {
-			//log.error("[User Controller exception in PUT: ]", ex2);
 			return "Exception in User Controller PUT (ex2), contact admins!";
 		}
 		return "OK, User edited!";

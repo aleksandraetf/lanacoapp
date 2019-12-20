@@ -59,7 +59,8 @@ class AirplanePage extends Component {
 					<Button  onClick={() => window.location="/supervisor/destination" }>Destinacije</Button>
 					<Button  onClick={() => window.location="/supervisor/aircompany" }>Aviokompanije</Button>
 					<Button  onClick={() => window.location="/supervisor/airplane" }>Avioni</Button>
-					<Button  onClick={this.logOut}>Log Out</Button>{'  '}
+					<Button  onClick={() => window.location="/supervisor/administrator" }>Administratori</Button>
+					<Button  onClick={this.logOut}>Odjavi se</Button>{'  '}
                 </Container>
             </div>
         );

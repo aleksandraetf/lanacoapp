@@ -87,7 +87,7 @@ class AirplanePage extends Component {
                 credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Aircompany Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
+        ).then(response => { if (response.status === 202) { this.loadData(); this.cleanData(); toast.success("Avion obrisan!", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Aircompany not saved! Fields can not be empty and it is not possible to add existing Aircompany!"}) } });
 	}
 
     handleSubmit(event) {
@@ -109,7 +109,7 @@ class AirplanePage extends Component {
                 //credentials:'include',
                 body: JSON.stringify(dataToSend),
             }
-        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Airplane Saved", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Airplane not saved! Fields can not be empty and it is not possible to add existing Airplane!" }) } });
+        ).then(response => {if (response.status === 202) { this.loadData(); this.cleanData(); this.toggle('showModal'); toast.success("Avion sacuvan", { position: toast.POSITION_TOP_RIGHT }); } else { this.setState({ message: "Avion nije sacuvan." }) } });
     }
 
     render() {

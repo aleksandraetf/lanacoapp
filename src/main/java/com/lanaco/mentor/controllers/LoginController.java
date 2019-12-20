@@ -55,7 +55,6 @@ public class LoginController {
 	
 	@RequestMapping(value="/login/user/",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<String> userLogIn(@RequestBody LoginDTO reqUser, HttpServletRequest request) {
-		System.out.println("Stize post na login !!! :"+reqUser.getEmail()+reqUser.getPassword()+reqUser.getRequestedRole());
 		if (reqUser == null || reqUser.getEmail() == null || reqUser.getEmail().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("")
 				|| reqUser.getRequestedRole()==null) {
@@ -67,7 +66,6 @@ public class LoginController {
 				return new ResponseEntity<String>("Ne postoji dati administrator!", HttpStatus.FORBIDDEN);
 			request.login(reqUser.getEmail(), reqUser.getPassword());
 			request.getSession().setAttribute("email",reqUser.getEmail());
-			System.out.println("Role:"+reqUser.getRequestedRole());
 			return new ResponseEntity<String>("OK", HttpStatus.OK);
 				
 		}
@@ -83,11 +81,9 @@ public class LoginController {
 	}
 	@RequestMapping(value="/login/administrator/",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<String> administratorLogIn(@RequestBody LoginDTO reqUser, HttpServletRequest request) {
-		System.out.println("Stize post na login !!! :"+reqUser.getEmail()+reqUser.getPassword()+reqUser.getRequestedRole());
 		if (reqUser == null || reqUser.getEmail() == null || reqUser.getEmail().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("")
 				|| reqUser.getRequestedRole()==null) {
-			System.out.println("0");
 			return new ResponseEntity<String>("Fail, Login Data incomplete",HttpStatus.ACCEPTED);
 		}
 		try {
@@ -100,27 +96,21 @@ public class LoginController {
 			return new ResponseEntity<String>("Ok",HttpStatus.OK);
 		}
 		catch(javax.servlet.ServletException ex) {
-			System.out.println("1");
-			ex.printStackTrace();
 			return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		catch (Exception e) {
-			System.out.println("2");
-			e.printStackTrace();
 			return new ResponseEntity<String>("Already logged!", HttpStatus.BAD_REQUEST);
 		}
 
 	}
 	@RequestMapping(value="/login/supervisor/",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<String> supervisorLogIn(@RequestBody LoginDTO reqUser, HttpServletRequest request) {
-		System.out.println("Stize post na login !!! :"+reqUser.getEmail()+reqUser.getPassword()+reqUser.getRequestedRole());
 		if (reqUser == null || reqUser.getEmail() == null || reqUser.getEmail().trim().equals("")
 				|| reqUser.getPassword() == null || reqUser.getPassword().trim().equals("")
 				|| reqUser.getRequestedRole()==null) {
 			return new ResponseEntity<String>("Fail, Login Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		try {
-			System.out.println("Koji k ");
 			Supervisor supervisor=supervisorDAO.findOneByEmail(reqUser.getEmail());
 			if(supervisor==null)
 				return new ResponseEntity<String>("NO", HttpStatus.BAD_REQUEST);
@@ -140,8 +130,6 @@ public class LoginController {
 
 	@GetMapping(value = "/isAuthenticated/")
 	public ResponseEntity<String> userLogIn(HttpServletRequest request) {
-		System.out.println("Uslo u is auth");
-		System.out.println("Gospodine : "+request.getSession().getAttribute("email"));
 		if (SecurityContextHolder.getContext().getAuthentication() != null &&
 				request.getUserPrincipal()!=null
 				&& SecurityContextHolder.getContext().getAuthentication().isAuthenticated() == true) {
@@ -154,7 +142,6 @@ public class LoginController {
 	@GetMapping(value = "/logout/")
 	public ResponseEntity<String> logout(HttpServletRequest request) {
 		try {
-			System.out.println("Izloguj mee:"+request.getUserPrincipal());
 			request.logout();
 			
 			return new ResponseEntity<String>("OK", HttpStatus.OK);
@@ -172,7 +159,6 @@ public class LoginController {
 			return new ResponseEntity<String>("Fail, Registration Data incomplete", HttpStatus.BAD_REQUEST);
 		}
 		
-		System.out.println("Register : "+reqUser.getEmail()+","+reqUser.getPassword());
 		User user = userDAO.findOneByEmailAndIsActive(reqUser.getEmail(),true);
 		
 		if(user!=null)

@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.lanaco.mentor.dao.RoleDAO;
 import com.lanaco.mentor.dto.LoginDTO;
 import com.lanaco.mentor.model.Administrator;
 import com.lanaco.mentor.model.Aircompany;
+import com.lanaco.mentor.model.Role;
 import com.lanaco.mentor.service.AdministratorService;
 
 @RestController
@@ -27,6 +29,9 @@ public class AdministratorController {
 	@Autowired
 	private AdministratorService administratorService;
 	
+	@Autowired
+	private RoleDAO roleDAO;
+	
 	
 	@GetMapping(path="/", produces = "application/json")
 	public ResponseEntity<ArrayList<Administrator>> getAll(){
@@ -34,15 +39,15 @@ public class AdministratorController {
 	}
 	@GetMapping(path="/aircompany/",produces="application/json")
 	public ResponseEntity<Aircompany> getAircompany(HttpServletRequest request){
-		System.out.println("Provjeravam kompaniju za administratora:"+request.getSession().getAttribute("email"));
 		Aircompany aircompany=(administratorService.findAircompanyByAdministrator((String)request.getSession().getAttribute("email")));
-		System.out.println("Njegova kompanije je : "+aircompany.getId()+":"+aircompany.getName());
 		return new ResponseEntity<Aircompany>(aircompany,HttpStatus.OK);
 	}
 	
 	
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Administrator recObjAdmin, HttpServletRequest request){
+		Role userRole = roleDAO.findByRole("ADMINISTRATOR");
+		recObjAdmin.setRole(userRole);
 		String response=administratorService.save(recObjAdmin);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
@@ -66,8 +71,8 @@ public class AdministratorController {
 	}
 	
 	@DeleteMapping(path="/",produces="application/json")
-	public ResponseEntity<String> flagNotActive(@RequestBody  String username, HttpServletRequest request){
-		String response=administratorService.flagNotActive(username);
+	public ResponseEntity<String> flagNotActive(@RequestBody  String email, HttpServletRequest request){
+		String response=administratorService.flagNotActive(email);
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {

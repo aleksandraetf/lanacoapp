@@ -36,7 +36,6 @@ public class DestinationController {
 	@PostMapping(path="/",produces="application/json")
 	public ResponseEntity<String> save(@RequestBody  Destination recObjDestination, HttpServletRequest request){
 		String response=destinationService.save(recObjDestination);
-		System.out.println("Uslo u destinaciju");
 		if (response.contains("Fail")) {
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
@@ -61,16 +60,12 @@ public class DestinationController {
 	@DeleteMapping(path="/",produces="application/json")
 	public ResponseEntity<String> flagNotActive(@RequestBody  Destination recObjName, HttpServletRequest request){
 		
-		System.out.println(recObjName.getName());
 		String response=destinationService.flagNotActive(recObjName.getName());
 		if (response.contains("Fail")) {
-			System.out.println("1");
 			return new ResponseEntity<String>(response, HttpStatus.BAD_REQUEST);
 		} else if (response.contains("Exception")) {
-			System.out.println("2");
 			return new ResponseEntity<String>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		} else {
-			System.out.println("3");
 			return new ResponseEntity<String>(response, HttpStatus.ACCEPTED);
 		}
 	}

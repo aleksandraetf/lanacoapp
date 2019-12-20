@@ -286,7 +286,7 @@ class AirplanePage extends Component {
                             {
                                 flights.map((flight) => {
 									Moment.locale('en');
-                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserverd}</td><td>{flight.airplane.seats}</td>
+                                    return <tr key={flight.id}><td>{flight.price}</td><td>{flight.seatsReserved}</td><td>{flight.airplane.seats}</td>
 									<td>{flight.destination.name}</td><td>{flight.airplane.brand}</td><td>{flight.airCompany.name}</td>
 									<td>{Moment(flight.flightDate).format('YYYY-MM-DD : hh:MM:ss')}</td>
 									<td>
