@@ -63,7 +63,6 @@ logOut() {
     }
 	
 	handleDelete(event){
-		console.log(event.target.value);
 		let dataToSend = {
             name: event.target.value
         }
@@ -108,8 +107,6 @@ logOut() {
     }
 
     render() {
-        console.log("RENDER:")
-        console.log(this.state);
         let destinations = [...this.state.destinations];
         return (
            

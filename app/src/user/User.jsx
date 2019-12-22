@@ -61,15 +61,12 @@ class AirplanePage extends Component {
     }
 
 	handleBuy(event){
-		console.log(event.target.value);
-		console.log(this.state.numberOfTickets);
 		let dataToSend = {
             flight:{
 				id: event.target.value
 			},
 			numberOfTickets: this.state.numberOfTickets
         }
-		console.log(dataToSend);
         fetch('/api/ticket/',
             {
                 method: 'POST',
@@ -103,7 +100,6 @@ class AirplanePage extends Component {
 
 
     render() {
-        console.log(this.state);
         let flights = [...this.state.flights];
         return (
            

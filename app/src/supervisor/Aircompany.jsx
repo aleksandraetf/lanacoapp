@@ -62,7 +62,6 @@ class AircompanyPage extends Component {
     }
 
 	handleDelete(event){
-		console.log(event.target.value);
 		let dataToSend = {
             name: event.target.value
         }
@@ -105,8 +104,6 @@ class AircompanyPage extends Component {
     }
 
     render() {
-        console.log("RENDER:")
-        console.log(this.state);
         let aircompanies = [...this.state.aircompanies];
         return (
            

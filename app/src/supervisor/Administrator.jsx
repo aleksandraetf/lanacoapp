@@ -72,7 +72,6 @@ class AirplanePage extends Component {
 	onChange = date => this.setState({ date })
 
 	handleDelete(event){
-		console.log(event.target.value);
 		let dataToSend =this.state.administrators.filter((a)=>a.id==event.target.value)[0].email;
         fetch('/api/administrator/',
             {
@@ -127,7 +126,6 @@ class AirplanePage extends Component {
     }
 
     render() {
-        console.log(this.state);
 		let aircompanies=[...this.state.aircompanies];
 		let administrators=[...this.state.administrators];
         return (

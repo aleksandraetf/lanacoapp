@@ -22,16 +22,13 @@ class AirplanePage extends Component {
         this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleHistory=this.handleHistory.bind(this);
 		this.fetchTickets=this.fetchTickets.bind(this);
-		
-		console.log(sessionStorage.getItem("email"));
-		
+				
         this.state = {tickets : [], showModal: false, message: "",numberOfTickets: 0};
 		this.fetchTickets();
     }
 	
 	fetchTickets(){
 		let dataToSend='test@gmail.com';
-		console.log(dataToSend);
         fetch('/api/ticket/user/',
             {
                 method: 'GET',
@@ -48,8 +45,6 @@ class AirplanePage extends Component {
         )
             .then(response => response.json())
             .then(data => this.setState({ tickets: data }));
-		console.log('Tickeeeeeeeeeets:')
-		console.log(this.state.tickets);
 	}
 	
 	handleHistory(){
@@ -138,7 +133,6 @@ class AirplanePage extends Component {
     }
 
     render() {
-        console.log(this.state);
         let tickets = [...this.state.tickets];
         return (
            

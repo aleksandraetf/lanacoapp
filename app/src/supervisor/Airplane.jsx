@@ -69,7 +69,6 @@ class AirplanePage extends Component {
     }
 	
 	handleDelete(event){
-		console.log(event.target.value);
 		let dataToSend = {
             brand: event.target.value
         }
@@ -113,7 +112,6 @@ class AirplanePage extends Component {
     }
 
     render() {
-        console.log(this.state);
         let airplanes = [...this.state.airplanes];
         return (
            
