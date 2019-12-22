@@ -160,8 +160,6 @@ class AirplanePage extends Component {
 
 
     handleSubmit(event) {
-		console.log("State prije slanja novog flighta");
-		console.log(this.state);
         let dataToSend = {
 			seatsReserved: this.state.reserved,
             price: this.state.price,
@@ -192,7 +190,6 @@ class AirplanePage extends Component {
 	onChange = date => this.setState({ date })
 
     render() {
-		console.log(this.state);
         let flights = [...this.state.flights];
 		let aircompanies=[...this.state.aircompanies];
 		let airplanes=[...this.state.airplanes];

@@ -87,7 +87,6 @@ class AirplanePage extends Component {
 	onChange = date => this.setState({ date })
 
 	handleDelete(event){
-		console.log(event.target.value);
 		let dataToSend = {
             id: event.target.value
         }
@@ -147,7 +146,6 @@ class AirplanePage extends Component {
     }
 
     render() {
-        console.log(this.state);
         let flights = [...this.state.flights];
 		let aircompanies=[...this.state.aircompanies];
 		let airplanes=[...this.state.airplanes];

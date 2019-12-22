@@ -65,7 +65,6 @@ class Login extends Component {
 			password: this.state.password,
 			role: this.state.role
         }
-		console.log(dataToSend);
 		let url='';
 		if(this.refs.roleRef.value==="USER"){
 			url='/login/user/';
